@@ -18,6 +18,7 @@ impl Counter {
         }
     }
 
+    #[allow(dead_code)]
     pub fn increment(&self) {
         let mut num = self.value.lock().unwrap();
         *num += 1;
