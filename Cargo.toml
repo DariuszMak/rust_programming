@@ -1,0 +1,10 @@
+[package]
+name = "hello_world"
+version = "0.1.0"
+edition = "2021"
+
+description = "A simple Hello World Rust application"
+authors = ["Dariusz Makarewicz <darekmakarewicz1994@gmail.com>"]
+license = "MIT"
+
+[dependencies]
