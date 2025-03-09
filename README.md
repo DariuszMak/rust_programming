@@ -1,4 +1,26 @@
 # rust_programming
+### Formatting
+
 ```
 cargo test
+```
+
+### Formatting
+
+To check formatting:
+
+```sh
+cargo fmt --all --check --verbose
+```
+
+To apply formatting:
+
+```sh
+cargo fmt --all --verbose
+```
+
+### Linting
+
+```sh
+cargo clippy -- --warn clippy::pedantic
 ```
