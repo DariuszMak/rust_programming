@@ -1,10 +1,15 @@
-#[test]
-fn test_hello_world() {
-    let output = std::process::Command::new("cargo")
-        .arg("run")
-        .output()
-        .expect("Failed to execute process");
+use hello_world::counter::Counter;
 
-    let stdout = String::from_utf8_lossy(&output.stdout);
-    assert!(stdout.contains("Hello, world!"));
+#[test]
+fn test_single_increment() {
+    let counter = Counter::new();
+    counter.increment();
+    assert_eq!(counter.get_value(), 1);
+}
+
+#[test]
+fn test_multithreading() {
+    let counter = Counter::new();
+    counter.run_threads(5);
+    assert_eq!(counter.get_value(), 5);
 }
