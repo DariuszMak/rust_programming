@@ -1,5 +1,11 @@
 # rust_programming
-### Formatting
+### RUN
+
+```sh
+cargo run main.rs
+```
+
+### Run test
 
 ```sh
 cargo test
