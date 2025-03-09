@@ -34,5 +34,5 @@ cargo clippy -- --warn clippy::pedantic
 ### Useful bunch of commands:
 
 ```sh
-cargo fmt --all --verbose ; cargo test ; cargo clippy -- --warn clippy::pedantic
+clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- --warn clippy::pedantic
 ```
