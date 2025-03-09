@@ -1,3 +1,7 @@
+mod counter;
+
 fn main() {
-    println!("Hello, world!");
+    let counter = counter::Counter::new();
+    counter.run_threads(10);
+    println!("Final counter value: {}", counter.get_value());
 }
