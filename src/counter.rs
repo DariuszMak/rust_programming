@@ -5,6 +5,12 @@ pub struct Counter {
     value: Arc<Mutex<i32>>,
 }
 
+impl Default for Counter {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Counter {
     pub fn new() -> Self {
         Counter {

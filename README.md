@@ -31,6 +31,12 @@ To apply formatting:
 cargo fmt --all --verbose
 ```
 
+Fix with clippy:
+
+```sh
+cargo clippy --fix --lib
+```
+
 ### Linting
 
 ```sh
