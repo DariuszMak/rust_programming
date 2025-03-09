@@ -1,7 +1,7 @@
 # rust_programming
 ### Formatting
 
-```
+```sh
 cargo test
 ```
 
@@ -23,4 +23,10 @@ cargo fmt --all --verbose
 
 ```sh
 cargo clippy -- --warn clippy::pedantic
+```
+
+### Auditing dependencies
+
+```sh
+cargo audit --target-arch x86_64
 ```
