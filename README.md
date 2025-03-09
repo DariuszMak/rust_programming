@@ -2,6 +2,12 @@
 ### RUN
 
 ```sh
+cargo run
+```
+
+#### or
+
+```sh
 cargo run main.rs
 ```
 
