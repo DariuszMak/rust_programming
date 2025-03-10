@@ -43,7 +43,7 @@ cargo clippy --fix --lib
 cargo clippy -- --warn clippy::pedantic
 ```
 
-### Useful bunch of commands:
+## Useful bunch of commands:
 
 ```sh
 cargo clean ; clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- ; 
