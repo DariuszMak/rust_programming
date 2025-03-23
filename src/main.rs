@@ -1,7 +1,10 @@
-mod counter;
+use hello_world::Clock; // Use the crate name instead of `crate::Clock`
+use std::thread::sleep;
+use std::time::Duration;
 
 fn main() {
-    let counter = counter::Counter::new();
-    counter.run_threads(100000);
-    println!("Final counter value: {}", counter.get_value());
+    loop {
+        println!("Current UNIX timestamp: {}", Clock::now());
+        sleep(Duration::from_secs(1));
+    }
 }
