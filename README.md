@@ -15,6 +15,12 @@ cargo clean ; git add -A ; git stash save 'snapshot' ; git stash apply ; git cle
 git add -A ; git stash save 'snapshot' ; git stash apply ; git clean -fxd ; tree -if --noreport | xargs -I {} sh -c '[ -f "{}" ] && echo "{}" && cat "{}" && echo' > dump.txt ; 
 ```
 
+#### Update Rust
+
+```sh
+rustup update stable
+```
+
 ### RUN
 
 ```sh
