@@ -3,8 +3,8 @@
 ## Useful bunch of commands:
 
 ```sh
-cargo clean ; clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- ; cargo run ; 
-cargo clean ; clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- --warn clippy::pedantic ; cargo run ; 
+cargo clean ; git clean -fxd ; clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- ; cargo run ; 
+cargo clean ; git clean -fxd ; clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- --warn clippy::pedantic ; cargo run ; 
 ```
 
 ### RUN
