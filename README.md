@@ -39,6 +39,12 @@ cargo run main.rs
 cargo test
 ```
 
+### Create a release
+
+```sh
+cargo build --release
+```
+
 ### Formatting
 
 To check formatting:
