@@ -1,10 +1,10 @@
-use hello_world::Clock; // Use the crate name instead of `crate::Clock`
-use std::thread::sleep;
-use std::time::Duration;
+use hello_world::gui_clock::ClockApp;
 
-fn main() {
-    loop {
-        println!("Current UNIX timestamp: {}", Clock::now());
-        sleep(Duration::from_secs(1));
-    }
+fn main() -> eframe::Result<()> {
+    let options = eframe::NativeOptions::default();
+    eframe::run_native(
+        "ClockApp",
+        options,
+        Box::new(|_cc| Ok(Box::new(ClockApp::default()))),
+    )
 }
