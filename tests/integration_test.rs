@@ -1,15 +1,11 @@
-use hello_world::counter::Counter;
+use hello_world::Clock; // Use the crate name in integration tests
+use std::time::Duration;
 
 #[test]
-fn test_single_increment() {
-    let counter = Counter::new();
-    counter.increment();
-    assert_eq!(counter.get_value(), 1);
-}
+fn test_clock_integration() {
+    let time_before = Clock::now();
+    Clock::tick(Duration::from_secs(1));
+    let time_after = Clock::now();
 
-#[test]
-fn test_multithreading() {
-    let counter = Counter::new();
-    counter.run_threads(5);
-    assert_eq!(counter.get_value(), 5);
+    assert!(time_after >= time_before + 1);
 }
