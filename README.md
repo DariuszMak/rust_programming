@@ -18,7 +18,7 @@ git add -A ; git stash save 'snapshot' ; git stash apply ; git clean -fxd ; tree
 #### Update Rust
 
 ```sh
-rustup update stable
+rustup update stable ; 
 ```
 
 ### RUN
