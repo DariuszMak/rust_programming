@@ -1,4 +1,12 @@
 # rust_programming
+
+## Useful bunch of commands:
+
+```sh
+cargo clean ; clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- ; 
+cargo clean ; clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- --warn clippy::pedantic ; 
+```
+
 ### RUN
 
 ```sh
@@ -41,11 +49,4 @@ cargo clippy --fix --lib
 
 ```sh
 cargo clippy -- --warn clippy::pedantic
-```
-
-## Useful bunch of commands:
-
-```sh
-cargo clean ; clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- ; 
-cargo clean ; clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- --warn clippy::pedantic ; 
 ```
