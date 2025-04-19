@@ -6,18 +6,25 @@ Use rustup: https://rustup.rs/
 
 ## Useful bunch of commands:
 
-#### Useful development bunches
+##### Regular bunch for development
 
 ```sh
 clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- ; cargo run ; 
-cargo build --release ; 
+```
 
-cargo clean ; git add -A ; git stash save 'snapshot' ; git stash apply ; git clean -fxd ; clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- ; cargo run ; 
+##### Full project re-build
 
+```sh
+cargo clean ; git add -A ; git stash save 'snapshot' ; git stash apply ; git clean -fxd ; clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- ; cargo build --release ; 
+```
+
+##### Very strict linting
+
+```sh
 cargo clippy -- --warn clippy::pedantic ;  
 ```
 
-#### Create a dump to file (Linux-based environment only)
+##### Create a dump to file (Linux-based environment only)
 
 ```sh
 git add -A ; git stash save 'snapshot' ; git stash apply ; git clean -fxd ; tree -if --noreport | xargs -I {} sh -c '[ -f "{}" ] && echo "{}" && cat "{}" && echo' > dump.txt ; 
