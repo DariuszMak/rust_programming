@@ -166,6 +166,17 @@ impl App for ClockApp {
                     let inner = polar_to_cartesian(center, radius - 10.0, angle);
                     painter
                         .line_segment([inner, outer], egui::Stroke::new(1.5, egui::Color32::GRAY));
+
+                    let text_angle = (i as f32 / 12.0) * 2.0 * PI;
+                    let text_position = polar_to_cartesian(center, radius - 25.0, text_angle);
+
+                    painter.text(
+                        text_position,
+                        egui::Align2::CENTER_CENTER,
+                        format!("{}", ((i + 12 - 1) % 12) + 1),
+                        egui::TextStyle::Heading.resolve(&ui.style()),
+                        egui::Color32::WHITE,
+                    );
                 }
             });
         });
