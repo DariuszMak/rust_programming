@@ -1,4 +1,4 @@
-use hello_world::gui_clock::ClockApp;
+use gui_clock::gui_clock::ClockApp;
 
 fn main() -> eframe::Result<()> {
     let options = eframe::NativeOptions::default();

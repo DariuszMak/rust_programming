@@ -1,9 +1,9 @@
 [package]
-name = "hello_world"
+name = "gui_clock"
 version = "0.1.0"
 edition = "2021"
 
-description = "A simple Hello World Rust application"
+description = "A simple Rust GUI Analog Clock application"
 authors = ["Dariusz Makarewicz <darekmakarewicz1994@gmail.com>"]
 license = "MIT"
 
