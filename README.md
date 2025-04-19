@@ -6,7 +6,7 @@ Use rustup: https://rustup.rs/
 
 ## Useful bunch of commands:
 
-#### Useful bunch
+#### Useful development bunches
 
 ```sh
 clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- ; cargo run ; 
