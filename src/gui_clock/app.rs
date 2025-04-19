@@ -130,8 +130,9 @@ impl App for ClockApp {
                     ui.allocate_exact_size(Vec2::splat(300.0), egui::Sense::hover());
                 let painter = ui.painter();
 
-                let center = rect.center();
-                let radius = rect.width().min(rect.height()) / 2.0 - 10.0;
+                let mut center = rect.center();
+                center.y += 100.0;
+                let radius = rect.width().min(rect.height()) / 1.5 - 10.0;
 
                 painter.circle_stroke(
                     center,
