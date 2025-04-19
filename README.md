@@ -10,8 +10,11 @@ Use rustup: https://rustup.rs/
 
 ```sh
 clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- ; cargo run ; 
+cargo build --release ; 
+
 cargo clean ; git add -A ; git stash save 'snapshot' ; git stash apply ; git clean -fxd ; clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- ; cargo run ; 
-cargo clean ; git add -A ; git stash save 'snapshot' ; git stash apply ; git clean -fxd ; clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- --warn clippy::pedantic ; cargo run ; 
+
+cargo clippy -- --warn clippy::pedantic ;  
 ```
 
 #### Create a dump to file (Linux-based environment only)
