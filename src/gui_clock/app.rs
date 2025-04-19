@@ -132,7 +132,7 @@ impl App for ClockApp {
 
                 let mut center = rect.center();
                 center.y += 100.0;
-                let radius = rect.width().min(rect.height()) / 1.5 - 10.0;
+                let radius = rect.width().min(rect.height()) / 1.5;
 
                 painter.circle_stroke(
                     center,
