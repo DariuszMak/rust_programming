@@ -13,6 +13,29 @@ pub struct ClockApp {
     smooth_second: f32,
     smooth_minute: f32,
     smooth_hour: f32,
+
+    second_pid: PID,
+    minute_pid: PID,
+    hour_pid: PID,
+}
+
+#[derive(Default)]
+pub struct PID {
+    kp: f32,
+    ki: f32,
+    kd: f32,
+    prev_error: f32,
+    integral: f32,
+}
+
+impl PID {
+    fn update(&mut self, error: f32) -> f32 {
+        self.integral += error;
+        let derivative = error - self.prev_error;
+        self.prev_error = error;
+
+        self.kp * error + self.ki * self.integral + self.kd * derivative
+    }
 }
 
 impl Default for ClockApp {
@@ -24,6 +47,24 @@ impl Default for ClockApp {
             smooth_second: 0.0,
             smooth_minute: 0.0,
             smooth_hour: 0.0,
+            second_pid: PID {
+                kp: 0.1,
+                ki: 0.01,
+                kd: 0.05,
+                ..Default::default()
+            },
+            minute_pid: PID {
+                kp: 0.1,
+                ki: 0.01,
+                kd: 0.05,
+                ..Default::default()
+            },
+            hour_pid: PID {
+                kp: 0.1,
+                ki: 0.01,
+                kd: 0.05,
+                ..Default::default()
+            },
         }
     }
 }
@@ -64,12 +105,13 @@ impl App for ClockApp {
         let minute = now.minute() as f32 + second / 60.0;
         let hour = now.hour() as f32 + minute / 60.0;
 
-        let second_smoothing_factor = 0.0125;
-        let minute_smoothing_factor = 0.025;
-        let hour_smoothing_factor = 0.04;
-        self.smooth_second += (second - self.smooth_second) * second_smoothing_factor;
-        self.smooth_minute += (minute - self.smooth_minute) * minute_smoothing_factor;
-        self.smooth_hour += (hour - self.smooth_hour) * hour_smoothing_factor;
+        let second_error = second - self.smooth_second;
+        let minute_error = minute - self.smooth_minute;
+        let hour_error = hour - self.smooth_hour;
+
+        self.smooth_second += self.second_pid.update(second_error);
+        self.smooth_minute += self.minute_pid.update(minute_error);
+        self.smooth_hour += self.hour_pid.update(hour_error);
 
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.vertical_centered(|ui| {
