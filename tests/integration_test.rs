@@ -1,20 +1,20 @@
-use hello_world::gui_clock::ClockApp;
-use std::time::Duration;
-
-#[test]
-fn test_clock_tick_updates_time() {
-    let mut app = ClockApp::default();
-    let initial_time = app.get_current_time();
-
-    std::thread::sleep(Duration::from_millis(10));
-    app.tick();
-
-    assert!(app.get_current_time() > initial_time);
-}
 #[cfg(test)]
 mod tests {
     use eframe::egui::pos2;
     use hello_world::gui_clock::polar_to_cartesian;
+    use hello_world::gui_clock::ClockApp;
+    use std::time::Duration;
+
+    #[test]
+    fn test_clock_tick_updates_time() {
+        let mut app = ClockApp::default();
+        let initial_time = app.get_current_time();
+
+        std::thread::sleep(Duration::from_millis(10));
+        app.tick();
+
+        assert!(app.get_current_time() > initial_time);
+    }
 
     #[test]
     fn test_polar_to_cartesian_zero_angle() {
