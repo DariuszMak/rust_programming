@@ -25,25 +25,25 @@ rustup update stable ;
 ### RUN
 
 ```sh
-cargo run
+cargo run ; 
 ```
 
 #### or
 
 ```sh
-cargo run main.rs
+cargo run main.rs ; 
 ```
 
 ### Run test
 
 ```sh
-cargo test
+cargo test ; 
 ```
 
 ### Create a release
 
 ```sh
-cargo build --release
+cargo build --release ; 
 ```
 
 ### Formatting
@@ -51,23 +51,23 @@ cargo build --release
 To check formatting:
 
 ```sh
-cargo fmt --all --check --verbose
+cargo fmt --all --check --verbose ; 
 ```
 
 To apply formatting:
 
 ```sh
-cargo fmt --all --verbose
+cargo fmt --all --verbose ; 
 ```
 
 Fix with clippy:
 
 ```sh
-cargo clippy --fix --lib
+cargo clippy --fix --lib ; 
 ```
 
 ### Linting
 
 ```sh
-cargo clippy -- --warn clippy::pedantic
+cargo clippy -- --warn clippy::pedantic ; 
 ```
