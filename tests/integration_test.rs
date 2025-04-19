@@ -1,8 +1,8 @@
 #[cfg(test)]
 mod tests {
     use eframe::egui::pos2;
-    use hello_world::gui_clock::polar_to_cartesian;
-    use hello_world::gui_clock::ClockApp;
+    use gui_clock::gui_clock::polar_to_cartesian;
+    use gui_clock::gui_clock::ClockApp;
     use std::time::Duration;
 
     #[test]
