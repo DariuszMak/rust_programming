@@ -53,9 +53,9 @@ impl App for ClockApp {
         let minute = now.minute() as f32 + second / 60.0;
         let hour = now.hour() as f32 + minute / 60.0;
 
-        let second_smoothing_factor = 0.08;
-        let minute_smoothing_factor = 0.05;
-        let hour_smoothing_factor = 0.025;
+        let second_smoothing_factor = 0.0125;
+        let minute_smoothing_factor = 0.025;
+        let hour_smoothing_factor = 0.04;
         self.smooth_second += (second - self.smooth_second) * second_smoothing_factor;
         self.smooth_minute += (minute - self.smooth_minute) * minute_smoothing_factor;
         self.smooth_hour += (hour - self.smooth_hour) * hour_smoothing_factor;
