@@ -5,6 +5,7 @@
 #### Useful bunch
 
 ```sh
+clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- ; cargo run ; 
 cargo clean ; git add -A ; git stash save 'snapshot' ; git stash apply ; git clean -fxd ; clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- ; cargo run ; 
 cargo clean ; git add -A ; git stash save 'snapshot' ; git stash apply ; git clean -fxd ; clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- --warn clippy::pedantic ; cargo run ; 
 ```
