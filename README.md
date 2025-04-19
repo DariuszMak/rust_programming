@@ -10,7 +10,7 @@ cargo clean ; git add -A ; git stash save 'snapshot' ; git stash apply ; git cle
 cargo clean ; git add -A ; git stash save 'snapshot' ; git stash apply ; git clean -fxd ; clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- --warn clippy::pedantic ; cargo run ; 
 ```
 
-#### Create a dump to file
+#### Create a dump to file (Linux-based environment only)
 
 ```sh
 git add -A ; git stash save 'snapshot' ; git stash apply ; git clean -fxd ; tree -if --noreport | xargs -I {} sh -c '[ -f "{}" ] && echo "{}" && cat "{}" && echo' > dump.txt ; 
