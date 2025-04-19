@@ -160,6 +160,20 @@ impl App for ClockApp {
                     egui::Stroke::new(1.0, egui::Color32::RED),
                 );
 
+                for i in 0..60 {
+                    let angle = (i as f32 / 60.0) * 2.0 * PI;
+                    let outer = polar_to_cartesian(center, radius, angle);
+                    let inner = if i % 5 == 0 {
+                        polar_to_cartesian(center, radius - 10.0, angle)
+                    } else {
+                        polar_to_cartesian(center, radius - 5.0, angle)
+                    };
+                    painter.line_segment(
+                        [inner, outer],
+                        egui::Stroke::new(1.0, egui::Color32::DARK_GRAY),
+                    );
+                }
+
                 for i in 0..12 {
                     let angle = (i as f32 / 12.0) * 2.0 * PI;
                     let outer = polar_to_cartesian(center, radius, angle);
