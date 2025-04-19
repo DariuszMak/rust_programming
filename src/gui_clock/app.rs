@@ -63,6 +63,16 @@ impl App for ClockApp {
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.vertical_centered(|ui| {
                 ui.heading("Analog Clock");
+
+                let formatted_time = format!(
+                    "{:02}:{:02}:{:02}.{:03}",
+                    now.hour(),
+                    now.minute(),
+                    now.second(),
+                    now.nanosecond() / 1_000_000
+                );
+                ui.label(egui::RichText::new(formatted_time).monospace().size(24.0));
+
                 let (rect, _response) =
                     ui.allocate_exact_size(Vec2::splat(300.0), egui::Sense::hover());
                 let painter = ui.painter();
