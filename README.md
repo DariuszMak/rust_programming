@@ -27,7 +27,7 @@ cargo clippy -- --warn clippy::pedantic ;
 ##### Create a dump to file (Linux-based environment only)
 
 ```sh
-git clean -fxd ; tree -if --noreport | xargs -I {} sh -c '[ -f "{}" ] && echo "{}" && cat "{}" && echo' > dump.txt ; 
+git clean -fxd ; tree -if --noreport | xargs -I {} sh -c '[ -f "{}" ] && echo "{}" && cat "{}" && echo' > dump.txt ; git add -A ; git stash save 'dump snapshot' ; 
 ```
 
 #### Update Rust
