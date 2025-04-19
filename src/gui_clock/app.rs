@@ -188,7 +188,7 @@ impl App for ClockApp {
                         text_position,
                         egui::Align2::CENTER_CENTER,
                         format!("{}", ((i + 12 - 1) % 12) + 1),
-                        egui::TextStyle::Heading.resolve(&ui.style()),
+                        egui::TextStyle::Heading.resolve(ui.style()),
                         egui::Color32::WHITE,
                     );
                 }
