@@ -53,10 +53,12 @@ impl App for ClockApp {
         let minute = now.minute() as f32 + second / 60.0;
         let hour = now.hour() as f32 + minute / 60.0;
 
-        let smoothing_factor = 0.1;
-        self.smooth_second += (second - self.smooth_second) * smoothing_factor;
-        self.smooth_minute += (minute - self.smooth_minute) * smoothing_factor;
-        self.smooth_hour += (hour - self.smooth_hour) * smoothing_factor;
+        let second_smoothing_factor = 0.08;
+        let minute_smoothing_factor = 0.05;
+        let hour_smoothing_factor = 0.025;
+        self.smooth_second += (second - self.smooth_second) * second_smoothing_factor;
+        self.smooth_minute += (minute - self.smooth_minute) * minute_smoothing_factor;
+        self.smooth_hour += (hour - self.smooth_hour) * hour_smoothing_factor;
 
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.vertical_centered(|ui| {
