@@ -1,5 +1,9 @@
 # rust_programming
 
+## Install Rust
+
+Use rustup: https://rustup.rs/
+
 ## Useful bunch of commands:
 
 #### Useful bunch
