@@ -9,6 +9,9 @@ use super::polar_to_cartesian;
 pub struct ClockApp {
     start_time: Instant,
     current_time: Instant,
+    smooth_second: f32,
+    smooth_minute: f32,
+    smooth_hour: f32,
 }
 
 impl Default for ClockApp {
@@ -17,6 +20,9 @@ impl Default for ClockApp {
         Self {
             start_time: now,
             current_time: now,
+            smooth_second: 0.0,
+            smooth_minute: 0.0,
+            smooth_hour: 0.0,
         }
     }
 }
@@ -42,6 +48,15 @@ impl ClockApp {
 impl App for ClockApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         self.tick();
+        let now = Local::now();
+        let second = now.second() as f32 + now.nanosecond() as f32 / 1e9;
+        let minute = now.minute() as f32 + second / 60.0;
+        let hour = now.hour() as f32 + minute / 60.0;
+
+        let smoothing_factor = 0.1;
+        self.smooth_second += (second - self.smooth_second) * smoothing_factor;
+        self.smooth_minute += (minute - self.smooth_minute) * smoothing_factor;
+        self.smooth_hour += (hour - self.smooth_hour) * smoothing_factor;
 
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.vertical_centered(|ui| {
@@ -59,14 +74,9 @@ impl App for ClockApp {
                     egui::Stroke::new(2.0, ui.visuals().text_color()),
                 );
 
-                let now = Local::now();
-                let second = now.second() as f32;
-                let minute = now.minute() as f32 + second / 60.0;
-                let hour = now.hour() as f32 + minute / 60.0;
-
-                let second_angle = (second / 60.0) * 2.0 * PI;
-                let minute_angle = (minute / 60.0) * 2.0 * PI;
-                let hour_angle = (hour / 12.0) * 2.0 * PI;
+                let second_angle = (self.smooth_second / 60.0) * 2.0 * PI;
+                let minute_angle = (self.smooth_minute / 60.0) * 2.0 * PI;
+                let hour_angle = (self.smooth_hour / 12.0) * 2.0 * PI;
 
                 let second_hand = polar_to_cartesian(center, radius * 0.9, second_angle);
                 let minute_hand = polar_to_cartesian(center, radius * 0.7, minute_angle);
