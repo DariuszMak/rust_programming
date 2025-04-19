@@ -15,7 +15,7 @@ clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- ; cargo run ;
 ##### Full project re-build
 
 ```sh
-cargo clean ; git add -A ; git stash save 'snapshot' ; git stash apply ; git clean -fxd ; clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- ; cargo build --release ; 
+cargo clean ; git clean -fxd ; clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- ; cargo build --release ; 
 ```
 
 ##### Very strict linting
@@ -27,7 +27,7 @@ cargo clippy -- --warn clippy::pedantic ;
 ##### Create a dump to file (Linux-based environment only)
 
 ```sh
-git add -A ; git stash save 'snapshot' ; git stash apply ; git clean -fxd ; tree -if --noreport | xargs -I {} sh -c '[ -f "{}" ] && echo "{}" && cat "{}" && echo' > dump.txt ; 
+git clean -fxd ; tree -if --noreport | xargs -I {} sh -c '[ -f "{}" ] && echo "{}" && cat "{}" && echo' > dump.txt ; 
 ```
 
 #### Update Rust
