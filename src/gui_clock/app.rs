@@ -1,6 +1,7 @@
 use chrono::Local;
 use chrono::Timelike;
 use eframe::{egui, egui::Vec2, App};
+use egui::Key;
 use std::f32::consts::PI;
 use std::time::Instant;
 
@@ -48,6 +49,16 @@ impl ClockApp {
 impl App for ClockApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         self.tick();
+
+        if ctx.input(|i| i.key_pressed(Key::R)) {
+            let now = Instant::now();
+            self.start_time = now;
+            self.current_time = now;
+            self.smooth_second = 0.0;
+            self.smooth_minute = 0.0;
+            self.smooth_hour = 0.0;
+        }
+
         let now = Local::now();
         let second = now.second() as f32 + now.nanosecond() as f32 / 1e9;
         let minute = now.minute() as f32 + second / 60.0;
