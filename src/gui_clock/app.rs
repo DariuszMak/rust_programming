@@ -9,6 +9,7 @@ use std::time::Instant;
 use super::polar_to_cartesian;
 use super::utils::calculate_clock_angles;
 use super::utils::ClockPid;
+use super::utils::PID;
 use super::ClockAngles;
 
 pub struct ClockApp {
@@ -21,25 +22,6 @@ pub struct ClockApp {
     second_pid: PID,
     minute_pid: PID,
     hour_pid: PID,
-}
-
-#[derive(Default)]
-pub struct PID {
-    kp: f32,
-    ki: f32,
-    kd: f32,
-    prev_error: f32,
-    integral: f32,
-}
-
-impl PID {
-    fn update(&mut self, error: f32) -> f32 {
-        self.integral += error;
-        let derivative = error - self.prev_error;
-        self.prev_error = error;
-
-        self.kp * error + self.ki * self.integral + self.kd * derivative
-    }
 }
 
 impl Default for ClockApp {

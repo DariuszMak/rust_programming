@@ -1,6 +1,25 @@
 use chrono::{DateTime, Local, Timelike};
 use eframe::egui;
 
+#[derive(Default)]
+pub struct PID {
+    pub kp: f32,
+    pub ki: f32,
+    pub kd: f32,
+    pub prev_error: f32,
+    pub integral: f32,
+}
+
+impl PID {
+    pub fn update(&mut self, error: f32) -> f32 {
+        self.integral += error;
+        let derivative = error - self.prev_error;
+        self.prev_error = error;
+
+        self.kp * error + self.ki * self.integral + self.kd * derivative
+    }
+}
+
 pub fn polar_to_cartesian(center: egui::Pos2, length: f32, angle: f32) -> egui::Pos2 {
     egui::pos2(
         center.x + angle.sin() * length,
