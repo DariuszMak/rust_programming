@@ -1,10 +1,10 @@
 #[cfg(test)]
 mod tests {
-    use chrono::{Local, TimeZone};
     use eframe::egui::pos2;
     use gui_clock::gui_clock::calculate_clock_angles;
     use gui_clock::gui_clock::polar_to_cartesian;
     use gui_clock::gui_clock::utils::ClockPid;
+    use gui_clock::gui_clock::utils::Time;
     use gui_clock::gui_clock::ClockApp;
     use gui_clock::gui_clock::PID;
     use std::f32::consts::PI;
@@ -12,6 +12,10 @@ mod tests {
 
     fn approx_eq(a: f32, b: f32, epsilon: f32) -> bool {
         (a - b).abs() < epsilon
+    }
+
+    fn make_time(hour: u32, minute: u32, second: u32) -> Time {
+        Time::new(hour, minute, second, 0)
     }
 
     #[test]
@@ -100,8 +104,8 @@ mod tests {
 
     #[test]
     fn test_midnight_angles() {
-        let time = Local.with_ymd_and_hms(2023, 1, 1, 0, 0, 0).unwrap();
-        let angles = calculate_clock_angles(time);
+        let time = make_time(0, 0, 0);
+        let angles = calculate_clock_angles(&time);
         assert_eq!(angles.second, 0.0);
         assert_eq!(angles.minute, 0.0);
         assert_eq!(angles.hour, 0.0);
@@ -109,8 +113,8 @@ mod tests {
 
     #[test]
     fn test_noon_angles() {
-        let time = Local.with_ymd_and_hms(2023, 1, 1, 12, 0, 0).unwrap();
-        let angles = calculate_clock_angles(time);
+        let time = make_time(12, 0, 0);
+        let angles = calculate_clock_angles(&time);
         assert_eq!(angles.second, 0.0);
         assert_eq!(angles.minute, 0.0);
         assert_eq!(angles.hour, 12.0);
@@ -118,8 +122,8 @@ mod tests {
 
     #[test]
     fn test_maximum_angles() {
-        let time = Local.with_ymd_and_hms(2023, 1, 1, 23, 59, 59).unwrap();
-        let angles = calculate_clock_angles(time);
+        let time = make_time(23, 59, 59);
+        let angles = calculate_clock_angles(&time);
         assert_eq!(angles.second, 59.0);
         assert_eq!(angles.minute, 59.983334);
         assert_eq!(angles.hour, 23.999722);
@@ -127,8 +131,8 @@ mod tests {
 
     #[test]
     fn test_half_past_three() {
-        let time = Local.with_ymd_and_hms(2023, 1, 1, 3, 30, 0).unwrap();
-        let angles = calculate_clock_angles(time);
+        let time = make_time(3, 30, 0);
+        let angles = calculate_clock_angles(&time);
         assert_eq!(angles.second, 0.0);
         assert_eq!(angles.minute, 30.0);
         assert_eq!(angles.hour, 3.5);

@@ -9,6 +9,7 @@ use std::time::Instant;
 use super::polar_to_cartesian;
 use super::utils::calculate_clock_angles;
 use super::utils::ClockPid;
+use super::utils::Time;
 use super::utils::PID;
 use super::ClockAngles;
 
@@ -95,7 +96,14 @@ impl App for ClockApp {
         let _seconds = (diff_ms / 1000) % 60;
         let _millis = diff_ms % 1000;
 
-        let clock_angles: ClockAngles = calculate_clock_angles(now);
+        let now: Time = Time::new(
+            now.hour(),
+            now.minute(),
+            now.second(),
+            now.nanosecond() / 1_000_000,
+        );
+
+        let clock_angles: ClockAngles = calculate_clock_angles(&now);
 
         let pid_second_error = clock_angles.second - self.pid_second;
         let pid_minute_error = clock_angles.minute - self.pid_minute;
@@ -111,10 +119,7 @@ impl App for ClockApp {
 
                 let formatted_time = format!(
                     "{:02}:{:02}:{:02}.{:03}",
-                    now.hour(),
-                    now.minute(),
-                    now.second(),
-                    now.nanosecond() / 1_000_000
+                    now.hour, now.minute, now.second, now.milisecond
                 );
                 ui.label(egui::RichText::new(formatted_time).monospace().size(24.0));
 
