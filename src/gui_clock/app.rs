@@ -87,27 +87,32 @@ impl App for ClockApp {
         }
 
         let now: DateTime<Local> = Local::now();
-
-        let duration = self.current_time.duration_since(self.start_time);
-        let diff_ms = duration.as_millis();
-
-        let _hours = (diff_ms / (1000 * 60 * 60)) % 24;
-        let _minutes = (diff_ms / (1000 * 60)) % 60;
-        let _seconds = (diff_ms / 1000) % 60;
-        let _millis = diff_ms % 1000;
-
-        let now: Time = Time::new(
+        let current_time: Time = Time::new(
             now.hour(),
             now.minute(),
             now.second(),
             now.nanosecond() / 1_000_000,
         );
 
-        let clock_angles: ClockAngles = calculate_clock_angles(&now);
+        let clock_angles: ClockAngles = calculate_clock_angles(&current_time);
 
-        let pid_second_error = clock_angles.second - self.pid_second;
-        let pid_minute_error = clock_angles.minute - self.pid_minute;
-        let pid_hour_error = clock_angles.hour - self.pid_hour;
+        let duration = self.current_time.duration_since(self.start_time);
+        let diff_ms = duration.as_millis() as u32;
+
+        let _hours = (diff_ms / (1000 * 60 * 60)) % 24;
+        let _minutes = (diff_ms / (1000 * 60)) % 60;
+        let _seconds = (diff_ms / 1000) % 60;
+        let _miliseconds = diff_ms % 1000;
+
+        let duration_time: Time = Time::new(_hours, _minutes, _seconds, _miliseconds);
+
+        let duration_clock_angles: ClockAngles = calculate_clock_angles(&duration_time);
+
+        let calculated_angles = clock_angles + duration_clock_angles;
+
+        let pid_second_error = calculated_angles.second - self.pid_second;
+        let pid_minute_error = calculated_angles.minute - self.pid_minute;
+        let pid_hour_error = calculated_angles.hour - self.pid_hour;
 
         self.pid_second += self.second_pid.update(pid_second_error);
         self.pid_minute += self.minute_pid.update(pid_minute_error);
@@ -119,7 +124,10 @@ impl App for ClockApp {
 
                 let formatted_time = format!(
                     "{:02}:{:02}:{:02}.{:03}",
-                    now.hour, now.minute, now.second, now.milisecond
+                    current_time.hour,
+                    current_time.minute,
+                    current_time.second,
+                    current_time.milisecond
                 );
                 ui.label(egui::RichText::new(formatted_time).monospace().size(24.0));
 

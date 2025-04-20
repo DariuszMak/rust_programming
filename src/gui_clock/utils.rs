@@ -1,5 +1,5 @@
 use eframe::egui;
-use std::f32::consts::PI;
+use std::{f32::consts::PI, ops::Add};
 
 #[derive(Default)]
 pub struct PID {
@@ -59,12 +59,24 @@ impl Time {
     }
 }
 
+#[derive(Debug, Clone, Copy)]
 pub struct ClockAngles {
     pub second: f32,
     pub minute: f32,
     pub hour: f32,
 }
 
+impl Add for ClockAngles {
+    type Output = ClockAngles;
+
+    fn add(self, other: ClockAngles) -> ClockAngles {
+        ClockAngles {
+            second: self.second + other.second,
+            minute: self.minute + other.minute,
+            hour: self.hour + other.hour,
+        }
+    }
+}
 pub fn calculate_clock_angles(time: &Time) -> ClockAngles {
     let second_angle = time.second + time.milisecond / 1e3;
     let minute_angle = time.minute + second_angle / 60.0;
