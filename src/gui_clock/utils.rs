@@ -32,13 +32,13 @@ pub struct ClockAngles {
 }
 
 pub fn calculate_clock_angles(time: DateTime<Local>) -> ClockAngles {
-    let second = time.second() as f32 + time.nanosecond() as f32 / 1e9;
-    let minute = time.minute() as f32 + second / 60.0;
-    let hour = time.hour() as f32 + minute / 60.0;
+    let second_angle = time.second() as f32 + time.nanosecond() as f32 / 1e9;
+    let minute_angle = time.minute() as f32 + second_angle / 60.0;
+    let hour_angle = time.hour() as f32 + minute_angle / 60.0;
 
     ClockAngles {
-        second,
-        minute,
-        hour,
+        second: second_angle,
+        minute: minute_angle,
+        hour: hour_angle,
     }
 }
