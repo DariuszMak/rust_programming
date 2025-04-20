@@ -8,6 +8,7 @@ use std::time::Instant;
 
 use super::polar_to_cartesian;
 use super::utils::calculate_clock_angles;
+use super::utils::ClockPid;
 use super::ClockAngles;
 
 pub struct ClockApp {
@@ -141,9 +142,14 @@ impl App for ClockApp {
                     egui::Stroke::new(2.0, ui.visuals().text_color()),
                 );
 
-                let pid_second_angle = (self.pid_second / 60.0) * 2.0 * PI;
-                let pid_minute_angle = (self.pid_minute / 60.0) * 2.0 * PI;
-                let pid_hour_angle = (self.pid_hour / 12.0) * 2.0 * PI;
+                let clock = ClockPid {
+                    pid_second: self.pid_second,
+                    pid_minute: self.pid_minute,
+                    pid_hour: self.pid_hour,
+                };
+
+                let (pid_second_angle, pid_minute_angle, pid_hour_angle) =
+                    clock.angles_in_radians();
 
                 let second_hand = polar_to_cartesian(center, radius * 0.9, pid_second_angle);
                 let minute_hand = polar_to_cartesian(center, radius * 0.7, pid_minute_angle);
