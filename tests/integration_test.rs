@@ -1,6 +1,5 @@
 #[cfg(test)]
 mod tests {
-    use chrono::DateTime;
     use chrono::{Local, TimeZone};
     use eframe::egui::pos2;
     use gui_clock::gui_clock::calculate_clock_angles;
@@ -119,11 +118,11 @@ mod tests {
 
     #[test]
     fn test_maximum_angles() {
-        let time = Local.with_ymd_and_hms(2023, 1, 1, 12, 59, 59).unwrap();
+        let time = Local.with_ymd_and_hms(2023, 1, 1, 23, 59, 59).unwrap();
         let angles = calculate_clock_angles(time);
         assert_eq!(angles.second, 59.0);
         assert_eq!(angles.minute, 59.983334);
-        assert_eq!(angles.hour, 12.9997225);
+        assert_eq!(angles.hour, 23.999722);
     }
 
     #[test]
