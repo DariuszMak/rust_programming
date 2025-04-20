@@ -13,9 +13,9 @@ use super::ClockAngles;
 pub struct ClockApp {
     start_time: Instant,
     current_time: Instant,
-    smooth_second: f32,
-    smooth_minute: f32,
-    smooth_hour: f32,
+    pid_second: f32,
+    pid_minute: f32,
+    pid_hour: f32,
 
     second_pid: PID,
     minute_pid: PID,
@@ -47,9 +47,9 @@ impl Default for ClockApp {
         Self {
             start_time: now,
             current_time: now,
-            smooth_second: 0.0,
-            smooth_minute: 0.0,
-            smooth_hour: 0.0,
+            pid_second: 0.0,
+            pid_minute: 0.0,
+            pid_hour: 0.0,
             second_pid: PID {
                 kp: 0.05,
                 ki: 0.005,
@@ -98,21 +98,21 @@ impl App for ClockApp {
             let now = Instant::now();
             self.start_time = now;
             self.current_time = now;
-            self.smooth_second = 0.0;
-            self.smooth_minute = 0.0;
-            self.smooth_hour = 0.0;
+            self.pid_second = 0.0;
+            self.pid_minute = 0.0;
+            self.pid_hour = 0.0;
         }
 
         let now: DateTime<Local> = Local::now();
         let clock_angles: ClockAngles = calculate_clock_angles(now);
 
-        let second_error = clock_angles.second - self.smooth_second;
-        let minute_error = clock_angles.minute - self.smooth_minute;
-        let hour_error = clock_angles.hour - self.smooth_hour;
+        let second_error = clock_angles.second - self.pid_second;
+        let minute_error = clock_angles.minute - self.pid_minute;
+        let hour_error = clock_angles.hour - self.pid_hour;
 
-        self.smooth_second += self.second_pid.update(second_error);
-        self.smooth_minute += self.minute_pid.update(minute_error);
-        self.smooth_hour += self.hour_pid.update(hour_error);
+        self.pid_second += self.second_pid.update(second_error);
+        self.pid_minute += self.minute_pid.update(minute_error);
+        self.pid_hour += self.hour_pid.update(hour_error);
 
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.vertical_centered(|ui| {
@@ -141,9 +141,9 @@ impl App for ClockApp {
                     egui::Stroke::new(2.0, ui.visuals().text_color()),
                 );
 
-                let pid_second_angle = (self.smooth_second / 60.0) * 2.0 * PI;
-                let pid_minute_angle = (self.smooth_minute / 60.0) * 2.0 * PI;
-                let pid_hour_angle = (self.smooth_hour / 12.0) * 2.0 * PI;
+                let pid_second_angle = (self.pid_second / 60.0) * 2.0 * PI;
+                let pid_minute_angle = (self.pid_minute / 60.0) * 2.0 * PI;
+                let pid_hour_angle = (self.pid_hour / 12.0) * 2.0 * PI;
 
                 let second_hand = polar_to_cartesian(center, radius * 0.9, pid_second_angle);
                 let minute_hand = polar_to_cartesian(center, radius * 0.7, pid_minute_angle);
