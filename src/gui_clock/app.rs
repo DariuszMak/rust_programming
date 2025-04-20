@@ -104,6 +104,15 @@ impl App for ClockApp {
         }
 
         let now: DateTime<Local> = Local::now();
+
+        let duration = self.current_time.duration_since(self.start_time);
+        let diff_ms = duration.as_millis();
+
+        let _hours = (diff_ms / (1000 * 60 * 60)) % 24;
+        let _minutes = (diff_ms / (1000 * 60)) % 60;
+        let _seconds = (diff_ms / 1000) % 60;
+        let _millis = diff_ms % 1000;
+
         let clock_angles: ClockAngles = calculate_clock_angles(now);
 
         let second_error = clock_angles.second - self.pid_second;
