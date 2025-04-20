@@ -141,13 +141,13 @@ impl App for ClockApp {
                     egui::Stroke::new(2.0, ui.visuals().text_color()),
                 );
 
-                let second_angle = (self.smooth_second / 60.0) * 2.0 * PI;
-                let minute_angle = (self.smooth_minute / 60.0) * 2.0 * PI;
-                let hour_angle = (self.smooth_hour / 12.0) * 2.0 * PI;
+                let pid_second_angle = (self.smooth_second / 60.0) * 2.0 * PI;
+                let pid_minute_angle = (self.smooth_minute / 60.0) * 2.0 * PI;
+                let pid_hour_angle = (self.smooth_hour / 12.0) * 2.0 * PI;
 
-                let second_hand = polar_to_cartesian(center, radius * 0.9, second_angle);
-                let minute_hand = polar_to_cartesian(center, radius * 0.7, minute_angle);
-                let hour_hand = polar_to_cartesian(center, radius * 0.5, hour_angle);
+                let second_hand = polar_to_cartesian(center, radius * 0.9, pid_second_angle);
+                let minute_hand = polar_to_cartesian(center, radius * 0.7, pid_minute_angle);
+                let hour_hand = polar_to_cartesian(center, radius * 0.5, pid_hour_angle);
 
                 painter.line_segment(
                     [center, hour_hand],
