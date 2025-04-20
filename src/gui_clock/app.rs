@@ -168,7 +168,7 @@ impl App for ClockApp {
                     };
                     painter.line_segment(
                         [inner, outer],
-                        egui::Stroke::new(1.0, egui::Color32::DARK_GRAY),
+                        egui::Stroke::new(3.0, egui::Color32::LIGHT_GRAY),
                     );
                 }
 
