@@ -4,12 +4,70 @@ mod tests {
     use eframe::egui::pos2;
     use gui_clock::gui_clock::calculate_clock_angles;
     use gui_clock::gui_clock::polar_to_cartesian;
+    use gui_clock::gui_clock::utils::ClockPid;
     use gui_clock::gui_clock::ClockApp;
+    use std::f32::consts::PI;
     use std::time::Duration;
+
+    fn approx_eq(a: f32, b: f32, epsilon: f32) -> bool {
+        (a - b).abs() < epsilon
+    }
 
     fn round_f32(v: f32, decimals: u32) -> f32 {
         let factor = 10f32.powi(decimals as i32);
         (v * factor).round() / factor
+    }
+
+    #[test]
+    fn test_angles_at_zero() {
+        let clock = ClockPid {
+            pid_second: 0.0,
+            pid_minute: 0.0,
+            pid_hour: 0.0,
+        };
+        let (s, m, h) = clock.angles_in_radians();
+        assert!(approx_eq(s, 0.0, 1e-10));
+        assert!(approx_eq(m, 0.0, 1e-10));
+        assert!(approx_eq(h, 0.0, 1e-10));
+    }
+
+    #[test]
+    fn test_angles_at_halfway() {
+        let clock = ClockPid {
+            pid_second: 30.0,
+            pid_minute: 30.0,
+            pid_hour: 6.0,
+        };
+        let (s, m, h) = clock.angles_in_radians();
+        assert!(approx_eq(s, PI, 1e-10));
+        assert!(approx_eq(m, PI, 1e-10));
+        assert!(approx_eq(h, PI, 1e-10));
+    }
+
+    #[test]
+    fn test_angles_at_full() {
+        let clock = ClockPid {
+            pid_second: 60.0,
+            pid_minute: 60.0,
+            pid_hour: 12.0,
+        };
+        let (s, m, h) = clock.angles_in_radians();
+        assert!(approx_eq(s, 2.0 * PI, 1e-10));
+        assert!(approx_eq(m, 2.0 * PI, 1e-10));
+        assert!(approx_eq(h, 2.0 * PI, 1e-10));
+    }
+
+    #[test]
+    fn test_quarter_angles() {
+        let clock = ClockPid {
+            pid_second: 15.0,
+            pid_minute: 15.0,
+            pid_hour: 3.0,
+        };
+        let (s, m, h) = clock.angles_in_radians();
+        assert!(approx_eq(s, 0.25 * 2.0 * PI, 1e-10));
+        assert!(approx_eq(m, 0.25 * 2.0 * PI, 1e-10));
+        assert!(approx_eq(h, 0.25 * 2.0 * PI, 1e-10));
     }
 
     #[test]
