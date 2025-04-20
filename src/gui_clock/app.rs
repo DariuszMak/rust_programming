@@ -65,8 +65,8 @@ impl Default for ClockApp {
             },
             hour_pid: PID {
                 kp: 0.08,
-                ki: 0.0001,
-                kd: 0.0001,
+                ki: 0.002,
+                kd: 0.002,
                 ..Default::default()
             },
         }
@@ -157,15 +157,15 @@ impl App for ClockApp {
 
                 painter.line_segment(
                     [center, hour_hand],
-                    egui::Stroke::new(4.0, egui::Color32::WHITE),
+                    egui::Stroke::new(8.0, egui::Color32::WHITE),
                 );
                 painter.line_segment(
                     [center, minute_hand],
-                    egui::Stroke::new(3.0, egui::Color32::LIGHT_GRAY),
+                    egui::Stroke::new(6.0, egui::Color32::LIGHT_GRAY),
                 );
                 painter.line_segment(
                     [center, second_hand],
-                    egui::Stroke::new(1.0, egui::Color32::RED),
+                    egui::Stroke::new(2.0, egui::Color32::RED),
                 );
 
                 for i in 0..60 {
