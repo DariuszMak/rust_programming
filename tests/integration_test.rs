@@ -15,11 +15,6 @@ mod tests {
         (a - b).abs() < epsilon
     }
 
-    fn round_f32(v: f32, decimals: u32) -> f32 {
-        let factor = 10f32.powi(decimals as i32);
-        (v * factor).round() / factor
-    }
-
     #[test]
     fn test_pid_update() {
         let mut pid = PID {
@@ -132,12 +127,21 @@ mod tests {
     }
 
     #[test]
+    fn test_maximum_angles() {
+        let time = Local.with_ymd_and_hms(2023, 1, 1, 12, 59, 59).unwrap();
+        let angles = calculate_clock_angles(time);
+        assert_eq!(angles.second, 59.0);
+        assert_eq!(angles.minute, 59.983334);
+        assert_eq!(angles.hour, 12.9997225);
+    }
+
+    #[test]
     fn test_half_past_three() {
         let time = Local.with_ymd_and_hms(2023, 1, 1, 3, 30, 0).unwrap();
         let angles = calculate_clock_angles(time);
-        assert_eq!(round_f32(angles.second, 2), 0.0);
-        assert_eq!(round_f32(angles.minute, 2), 30.0);
-        assert_eq!(round_f32(angles.hour, 2), 3.5);
+        assert_eq!(angles.second, 0.0);
+        assert_eq!(angles.minute, 30.0);
+        assert_eq!(angles.hour, 3.5);
     }
 
     #[test]
