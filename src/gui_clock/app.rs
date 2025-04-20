@@ -51,21 +51,21 @@ impl Default for ClockApp {
             pid_minute: 0.0,
             pid_hour: 0.0,
             second_pid: PID {
-                kp: 0.05,
+                kp: 0.15,
                 ki: 0.005,
-                kd: 0.002,
+                kd: 0.005,
                 ..Default::default()
             },
             minute_pid: PID {
-                kp: 0.15,
-                ki: 0.015,
-                kd: 0.01,
+                kp: 0.035,
+                ki: 0.0001,
+                kd: 0.0001,
                 ..Default::default()
             },
             hour_pid: PID {
-                kp: 0.3,
-                ki: 0.02,
-                kd: 0.05,
+                kp: 0.08,
+                ki: 0.0001,
+                kd: 0.0001,
                 ..Default::default()
             },
         }
