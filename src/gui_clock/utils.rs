@@ -1,5 +1,6 @@
 use chrono::{DateTime, Local, Timelike};
 use eframe::egui;
+use std::f32::consts::PI;
 
 #[derive(Default)]
 pub struct PID {
@@ -26,8 +27,6 @@ pub fn polar_to_cartesian(center: egui::Pos2, length: f32, angle: f32) -> egui::
         center.y - angle.cos() * length,
     )
 }
-
-use std::f32::consts::PI;
 
 pub struct ClockPid {
     pub pid_second: f32,
