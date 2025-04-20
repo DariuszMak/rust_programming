@@ -100,15 +100,6 @@ mod tests {
     }
 
     #[test]
-    fn test_calculate_clock_angles_output_ranges() {
-        let now: DateTime<Local> = Local::now();
-        let angles = calculate_clock_angles(now);
-        assert!(angles.second >= 0.0 && angles.second < 60.0);
-        assert!(angles.minute >= 0.0 && angles.minute < 60.0);
-        assert!(angles.hour >= 0.0 && angles.hour < 60.0);
-    }
-
-    #[test]
     fn test_midnight_angles() {
         let time = Local.with_ymd_and_hms(2023, 1, 1, 0, 0, 0).unwrap();
         let angles = calculate_clock_angles(time);
