@@ -97,13 +97,13 @@ impl App for ClockApp {
 
         let clock_angles: ClockAngles = calculate_clock_angles(now);
 
-        let second_error = clock_angles.second - self.pid_second;
-        let minute_error = clock_angles.minute - self.pid_minute;
-        let hour_error = clock_angles.hour - self.pid_hour;
+        let pid_second_error = clock_angles.second - self.pid_second;
+        let pid_minute_error = clock_angles.minute - self.pid_minute;
+        let pid_hour_error = clock_angles.hour - self.pid_hour;
 
-        self.pid_second += self.second_pid.update(second_error);
-        self.pid_minute += self.minute_pid.update(minute_error);
-        self.pid_hour += self.hour_pid.update(hour_error);
+        self.pid_second += self.second_pid.update(pid_second_error);
+        self.pid_minute += self.minute_pid.update(pid_minute_error);
+        self.pid_hour += self.hour_pid.update(pid_hour_error);
 
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.vertical_centered(|ui| {
