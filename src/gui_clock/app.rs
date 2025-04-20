@@ -86,13 +86,10 @@ impl App for ClockApp {
             self.pid_hour = 0.0;
         }
 
-        let now: DateTime<Local> = Local::now();
-        let current_time: Time = Time::new(
-            now.hour(),
-            now.minute(),
-            now.second(),
-            now.nanosecond() / 1_000_000,
-        );
+        let elapsed = Instant::now().duration_since(self.start_time);
+        let recalculated_start = Local::now() - chrono::Duration::from_std(elapsed).unwrap();
+        let t = recalculated_start.time();
+        let current_time = Time::new(t.hour(), t.minute(), t.second(), t.nanosecond() / 1_000_000);
 
         let clock_angles: ClockAngles = calculate_clock_angles(&current_time);
 
