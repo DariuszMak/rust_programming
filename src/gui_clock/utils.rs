@@ -1,4 +1,3 @@
-use chrono::{DateTime, Local, Timelike};
 use eframe::egui;
 use std::f32::consts::PI;
 
@@ -42,6 +41,23 @@ impl ClockPid {
         (second_angle, minute_angle, hour_angle)
     }
 }
+pub struct Time {
+    pub milisecond: f32,
+    pub second: f32,
+    pub minute: f32,
+    pub hour: f32,
+}
+
+impl Time {
+    pub fn new(hour: u32, minute: u32, second: u32, milisecond: u32) -> Self {
+        Self {
+            milisecond: milisecond as f32,
+            second: second as f32,
+            minute: minute as f32,
+            hour: hour as f32,
+        }
+    }
+}
 
 pub struct ClockAngles {
     pub second: f32,
@@ -49,10 +65,10 @@ pub struct ClockAngles {
     pub hour: f32,
 }
 
-pub fn calculate_clock_angles(time: DateTime<Local>) -> ClockAngles {
-    let second_angle = time.second() as f32 + time.nanosecond() as f32 / 1e9;
-    let minute_angle = time.minute() as f32 + second_angle / 60.0;
-    let hour_angle = time.hour() as f32 + minute_angle / 60.0;
+pub fn calculate_clock_angles(time: &Time) -> ClockAngles {
+    let second_angle = time.second + time.milisecond / 1e3;
+    let minute_angle = time.minute + second_angle / 60.0;
+    let hour_angle = time.hour + minute_angle / 60.0;
 
     ClockAngles {
         second: second_angle,
