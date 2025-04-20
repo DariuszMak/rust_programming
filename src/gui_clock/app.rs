@@ -96,9 +96,8 @@ impl App for ClockApp {
         self.tick();
 
         if ctx.input(|i| i.key_pressed(Key::R)) {
-            let now = Instant::now();
-            self.start_time = now;
-            self.current_time = now;
+            self.start_time = Instant::now();
+            self.current_time = self.start_time;
             self.pid_second = 0.0;
             self.pid_minute = 0.0;
             self.pid_hour = 0.0;
