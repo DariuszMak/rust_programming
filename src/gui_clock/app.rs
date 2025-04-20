@@ -1,3 +1,4 @@
+use chrono::DateTime;
 use chrono::Local;
 use chrono::Timelike;
 use eframe::{egui, egui::Vec2, App};
@@ -6,7 +7,8 @@ use std::f32::consts::PI;
 use std::time::Instant;
 
 use super::polar_to_cartesian;
-use super::utils::calculate_clock_angles; // Importing from utils
+use super::utils::calculate_clock_angles;
+use super::ClockAngles;
 
 pub struct ClockApp {
     start_time: Instant,
@@ -101,13 +103,12 @@ impl App for ClockApp {
             self.smooth_hour = 0.0;
         }
 
-        // Using the new utility function to calculate angles
-        let now = Local::now();
-        let angles = calculate_clock_angles(now);
+        let now: DateTime<Local> = Local::now();
+        let clock_angles: ClockAngles = calculate_clock_angles(now);
 
-        let second_error = angles.second - self.smooth_second;
-        let minute_error = angles.minute - self.smooth_minute;
-        let hour_error = angles.hour - self.smooth_hour;
+        let second_error = clock_angles.second - self.smooth_second;
+        let minute_error = clock_angles.minute - self.smooth_minute;
+        let hour_error = clock_angles.hour - self.smooth_hour;
 
         self.smooth_second += self.second_pid.update(second_error);
         self.smooth_minute += self.minute_pid.update(minute_error);
