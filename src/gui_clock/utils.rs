@@ -18,6 +18,10 @@ impl PID {
 
         self.kp * error + self.ki * self.integral + self.kd * derivative
     }
+    pub fn reset(&mut self) {
+        self.prev_error = 0.0;
+        self.integral = 0.0;
+    }
 }
 
 pub fn polar_to_cartesian(center: egui::Pos2, length: f32, angle: f32) -> egui::Pos2 {

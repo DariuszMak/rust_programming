@@ -83,6 +83,9 @@ impl App for ClockApp {
             self.pid_second = 0.0;
             self.pid_minute = 0.0;
             self.pid_hour = 0.0;
+            self.second_pid.reset();
+            self.minute_pid.reset();
+            self.hour_pid.reset();
         }
 
         let elapsed = Instant::now().duration_since(self.start_time);
