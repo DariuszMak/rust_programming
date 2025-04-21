@@ -96,7 +96,7 @@ impl App for ClockApp {
         let current_time_converted = convert_instant_to_time(self.current_time);
 
         let duration = self.current_time.duration_since(self.start_time);
-        let duration_time: Time = decompose_duration(duration);
+        let duration_time: Time = decompose_duration(duration, true);
 
         let start_time_clock_angles: ClockAngles = calculate_clock_angles(&start_time_converted);
         let duration_time_clock_angles: ClockAngles = calculate_clock_angles(&duration_time);
@@ -113,7 +113,7 @@ impl App for ClockApp {
 
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.vertical_centered(|ui| {
-                ui.heading("Big Black C...Clock");
+                ui.heading("Analog Clock");
 
                 let formatted_time = format!(
                     "{:02}:{:02}:{:02}.{:03}",
