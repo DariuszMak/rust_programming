@@ -6,6 +6,7 @@ use std::time::Instant;
 use super::polar_to_cartesian;
 use super::utils::calculate_clock_angles;
 use super::utils::convert_instant_to_time;
+use super::utils::decompose_duration;
 use super::utils::ClockPid;
 use super::utils::Time;
 use super::utils::PID;
@@ -94,18 +95,10 @@ impl App for ClockApp {
         let start_time_converted = convert_instant_to_time(self.start_time);
         let current_time_converted = convert_instant_to_time(self.current_time);
 
-        let start_time_clock_angles: ClockAngles = calculate_clock_angles(&start_time_converted);
-
         let duration = self.current_time.duration_since(self.start_time);
-        let diff_ms = duration.as_millis() as u32;
+        let duration_time: Time = decompose_duration(duration);
 
-        let hours = (diff_ms / (1000 * 60 * 60)) % 24;
-        let minutes = (diff_ms / (1000 * 60)) % 60;
-        let seconds = (diff_ms / 1000) % 60;
-        let miliseconds = diff_ms % 1000;
-
-        let duration_time: Time = Time::new(hours, minutes, seconds, miliseconds);
-
+        let start_time_clock_angles: ClockAngles = calculate_clock_angles(&start_time_converted);
         let duration_time_clock_angles: ClockAngles = calculate_clock_angles(&duration_time);
 
         let calculated_angles = start_time_clock_angles + duration_time_clock_angles;
