@@ -120,7 +120,7 @@ impl App for ClockApp {
                     current_time_converted.hour,
                     current_time_converted.minute,
                     current_time_converted.second,
-                    current_time_converted.milisecond
+                    current_time_converted.millisecond
                 );
                 ui.label(egui::RichText::new(formatted_time).monospace().size(24.0));
 

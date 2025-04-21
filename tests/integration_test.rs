@@ -32,7 +32,7 @@ mod tests {
         assert_eq!(components.hour, 1);
         assert_eq!(components.minute, 0);
         assert_eq!(components.second, 0);
-        assert_eq!(components.milisecond, 0);
+        assert_eq!(components.millisecond, 0);
     }
 
     #[test]
@@ -43,7 +43,7 @@ mod tests {
         assert_eq!(components.hour, 2);
         assert_eq!(components.minute, 34);
         assert_eq!(components.second, 56);
-        assert_eq!(components.milisecond, 789);
+        assert_eq!(components.millisecond, 789);
     }
 
     #[test]
