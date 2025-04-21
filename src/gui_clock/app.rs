@@ -94,12 +94,12 @@ impl App for ClockApp {
         let duration = self.current_time.duration_since(self.start_time);
         let diff_ms = duration.as_millis() as u32;
 
-        let _hours = (diff_ms / (1000 * 60 * 60)) % 24;
-        let _minutes = (diff_ms / (1000 * 60)) % 60;
-        let _seconds = (diff_ms / 1000) % 60;
-        let _miliseconds = diff_ms % 1000;
+        let hours = (diff_ms / (1000 * 60 * 60)) % 24;
+        let minutes = (diff_ms / (1000 * 60)) % 60;
+        let seconds = (diff_ms / 1000) % 60;
+        let miliseconds = diff_ms % 1000;
 
-        let duration_time: Time = Time::new(_hours, _minutes, _seconds, _miliseconds);
+        let duration_time: Time = Time::new(hours, minutes, seconds, miliseconds);
 
         let duration_clock_angles: ClockAngles = calculate_clock_angles(&duration_time);
 

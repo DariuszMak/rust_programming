@@ -58,7 +58,7 @@ mod tests {
         assert_eq!(result.minute, expected.minute);
         assert!(result.second == expected.second || result.second == expected.second - 1.0);
     }
-    
+
     #[test]
     fn test_pid_update() {
         let mut pid = PID {
