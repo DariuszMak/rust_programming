@@ -185,7 +185,7 @@ mod tests {
     }
 
     #[test]
-    fn test_midnight_angles() {
+    fn test_midnight_clock_angles() {
         let time: Time = Time::new(0, 0, 0, 0);
         let angles = calculate_clock_angles(&time);
         assert_eq!(angles.seconds, 0.0);
@@ -194,7 +194,7 @@ mod tests {
     }
 
     #[test]
-    fn test_noon_angles() {
+    fn test_noon_clock_angles() {
         let time: Time = Time::new(12, 0, 0, 0);
         let angles = calculate_clock_angles(&time);
         assert_eq!(angles.seconds, 0.0);
@@ -203,7 +203,7 @@ mod tests {
     }
 
     #[test]
-    fn test_maximum_angles() {
+    fn test_maximum_clock_angles() {
         let time: Time = Time::new(23, 59, 59, 0);
         let angles = calculate_clock_angles(&time);
         assert_eq!(angles.seconds, 59.0);
@@ -212,7 +212,7 @@ mod tests {
     }
 
     #[test]
-    fn test_half_past_three() {
+    fn test_half_past_three_clock_angles() {
         let time: Time = Time::new(3, 30, 0, 0);
         let angles = calculate_clock_angles(&time);
         assert_eq!(angles.seconds, 0.0);
