@@ -6,6 +6,7 @@ mod tests {
     use gui_clock::gui_clock::calculate_clock_angles;
     use gui_clock::gui_clock::polar_to_cartesian;
     use gui_clock::gui_clock::utils::convert_instant_to_time;
+    use gui_clock::gui_clock::utils::decompose_duration;
     use gui_clock::gui_clock::utils::ClockPid;
     use gui_clock::gui_clock::utils::Time;
     use gui_clock::gui_clock::ClockApp;
@@ -21,6 +22,28 @@ mod tests {
 
     fn make_time(hour: u32, minute: u32, second: u32) -> Time {
         Time::new(hour, minute, second, 0)
+    }
+
+    #[test]
+    fn test_decompose_exact_one_hour() {
+        let duration = Duration::from_secs(3600);
+
+        let components = decompose_duration(duration);
+        assert_eq!(components.hour, 1);
+        assert_eq!(components.minute, 0);
+        assert_eq!(components.second, 0);
+        assert_eq!(components.milisecond, 0);
+    }
+
+    #[test]
+    fn test_decompose_hours_minutes_seconds_millis() {
+        let duration = Duration::from_millis(2 * 60 * 60 * 1000 + 34 * 60 * 1000 + 56 * 1000 + 789);
+
+        let components = decompose_duration(duration);
+        assert_eq!(components.hour, 2);
+        assert_eq!(components.minute, 34);
+        assert_eq!(components.second, 56);
+        assert_eq!(components.milisecond, 789);
     }
 
     #[test]
@@ -56,7 +79,7 @@ mod tests {
 
         assert_eq!(result.hour, expected.hour);
         assert_eq!(result.minute, expected.minute);
-        assert!(result.second == expected.second || result.second == expected.second - 1.0);
+        assert!(result.second == expected.second || result.second == expected.second - 1);
     }
 
     #[test]

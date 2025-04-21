@@ -1,7 +1,21 @@
 use chrono::{Local, Timelike};
 use eframe::egui;
-use std::time::Instant;
+use std::time::{Duration, Instant};
 use std::{f32::consts::PI, ops::Add};
+
+pub fn decompose_duration(diff_ms: Duration) -> Time {
+    let diff_ms = diff_ms.as_millis() as u32;
+    let hours = diff_ms / (1000 * 60 * 60);
+    let remaining_ms_after_hours = diff_ms - hours * 60 * 60 * 1000;
+
+    let minutes = remaining_ms_after_hours / (1000 * 60);
+    let remaining_ms_after_minutes = remaining_ms_after_hours - minutes * 60 * 1000;
+
+    let seconds = remaining_ms_after_minutes / 1000;
+    let milliseconds = remaining_ms_after_minutes - seconds * 1000;
+
+    Time::new(hours, minutes, seconds, milliseconds)
+}
 
 pub fn convert_instant_to_time(start_time: Instant) -> Time {
     let elapsed = Instant::now().duration_since(start_time);
@@ -55,19 +69,19 @@ impl ClockPid {
     }
 }
 pub struct Time {
-    pub milisecond: f32,
-    pub second: f32,
-    pub minute: f32,
-    pub hour: f32,
+    pub milisecond: u32,
+    pub second: u32,
+    pub minute: u32,
+    pub hour: u32,
 }
 
 impl Time {
     pub fn new(hour: u32, minute: u32, second: u32, milisecond: u32) -> Self {
         Self {
-            milisecond: milisecond as f32,
-            second: second as f32,
-            minute: minute as f32,
-            hour: hour as f32,
+            milisecond,
+            second,
+            minute,
+            hour,
         }
     }
 }
@@ -91,9 +105,9 @@ impl Add for ClockAngles {
     }
 }
 pub fn calculate_clock_angles(time: &Time) -> ClockAngles {
-    let second_angle = time.second + time.milisecond / 1e3;
-    let minute_angle = time.minute + second_angle / 60.0;
-    let hour_angle = time.hour + minute_angle / 60.0;
+    let second_angle = time.second as f32 + time.milisecond as f32 / 1e3;
+    let minute_angle = time.minute as f32 + second_angle / 60.0;
+    let hour_angle = time.hour as f32 + minute_angle / 60.0;
 
     ClockAngles {
         second: second_angle,
