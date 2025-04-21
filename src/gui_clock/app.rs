@@ -87,9 +87,9 @@ impl App for ClockApp {
             self.hour_pid.reset();
         }
 
-        let current_time = convert_instant_to_time(self.start_time);
+        let start_time_converted = convert_instant_to_time(self.start_time);
 
-        let clock_angles: ClockAngles = calculate_clock_angles(&current_time);
+        let start_time_clock_angles: ClockAngles = calculate_clock_angles(&start_time_converted);
 
         let duration = self.current_time.duration_since(self.start_time);
         let diff_ms = duration.as_millis() as u32;
@@ -101,9 +101,9 @@ impl App for ClockApp {
 
         let duration_time: Time = Time::new(hours, minutes, seconds, miliseconds);
 
-        let duration_clock_angles: ClockAngles = calculate_clock_angles(&duration_time);
+        let duration_time_clock_angles: ClockAngles = calculate_clock_angles(&duration_time);
 
-        let calculated_angles = clock_angles + duration_clock_angles;
+        let calculated_angles = start_time_clock_angles + duration_time_clock_angles;
 
         let pid_second_error = calculated_angles.second - self.pid_second;
         let pid_minute_error = calculated_angles.minute - self.pid_minute;
@@ -119,10 +119,10 @@ impl App for ClockApp {
 
                 let formatted_time = format!(
                     "{:02}:{:02}:{:02}.{:03}",
-                    current_time.hour,
-                    current_time.minute,
-                    current_time.second,
-                    current_time.milisecond
+                    start_time_converted.hour,
+                    start_time_converted.minute,
+                    start_time_converted.second,
+                    start_time_converted.milisecond
                 );
                 ui.label(egui::RichText::new(formatted_time).monospace().size(24.0));
 
