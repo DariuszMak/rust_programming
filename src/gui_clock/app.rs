@@ -116,7 +116,7 @@ impl App for ClockApp {
 
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.vertical_centered(|ui| {
-                ui.heading("Analog Clock");
+                ui.heading("Big Black C...Clock");
 
                 let formatted_time = format!(
                     "{:02}:{:02}:{:02}.{:03}",
