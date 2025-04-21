@@ -1,5 +1,3 @@
-use chrono::Local;
-use chrono::Timelike;
 use eframe::{egui, egui::Vec2, App};
 use egui::Key;
 use std::f32::consts::PI;
@@ -7,6 +5,7 @@ use std::time::Instant;
 
 use super::polar_to_cartesian;
 use super::utils::calculate_clock_angles;
+use super::utils::convert_instant_to_time;
 use super::utils::ClockPid;
 use super::utils::Time;
 use super::utils::PID;
@@ -88,10 +87,7 @@ impl App for ClockApp {
             self.hour_pid.reset();
         }
 
-        let elapsed = Instant::now().duration_since(self.start_time);
-        let recalculated_start = Local::now() - chrono::Duration::from_std(elapsed).unwrap();
-        let t = recalculated_start.time();
-        let current_time = Time::new(t.hour(), t.minute(), t.second(), t.nanosecond() / 1_000_000);
+        let current_time = convert_instant_to_time(self.start_time);
 
         let clock_angles: ClockAngles = calculate_clock_angles(&current_time);
 
