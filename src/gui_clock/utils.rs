@@ -1,5 +1,14 @@
+use chrono::{Local, Timelike};
 use eframe::egui;
+use std::time::Instant;
 use std::{f32::consts::PI, ops::Add};
+
+pub fn convert_instant_to_time(start_time: Instant) -> Time {
+    let elapsed = Instant::now().duration_since(start_time);
+    let recalculated_start = Local::now() - chrono::Duration::from_std(elapsed).unwrap();
+    let t = recalculated_start.time();
+    Time::new(t.hour(), t.minute(), t.second(), t.nanosecond() / 1_000_000)
+}
 
 #[derive(Default)]
 pub struct PID {

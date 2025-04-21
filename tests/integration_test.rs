@@ -1,14 +1,19 @@
 #[cfg(test)]
 mod tests {
+    use chrono::Local;
+    use chrono::Timelike;
     use eframe::egui::pos2;
     use gui_clock::gui_clock::calculate_clock_angles;
     use gui_clock::gui_clock::polar_to_cartesian;
+    use gui_clock::gui_clock::utils::convert_instant_to_time;
     use gui_clock::gui_clock::utils::ClockPid;
     use gui_clock::gui_clock::utils::Time;
     use gui_clock::gui_clock::ClockApp;
     use gui_clock::gui_clock::PID;
     use std::f32::consts::PI;
+    use std::thread;
     use std::time::Duration;
+    use std::time::Instant;
 
     fn approx_eq(a: f32, b: f32, epsilon: f32) -> bool {
         (a - b).abs() < epsilon
@@ -18,6 +23,41 @@ mod tests {
         Time::new(hour, minute, second, 0)
     }
 
+    #[test]
+    fn test_convert_instant_to_time_recent() {
+        let start_time = Instant::now();
+        thread::sleep(Duration::from_millis(10));
+        let result = convert_instant_to_time(start_time);
+        let now = Local::now().time();
+        let expected = Time::new(
+            now.hour(),
+            now.minute(),
+            now.second(),
+            now.nanosecond() / 1_000_000,
+        );
+
+        assert_eq!(result.hour, expected.hour);
+        assert_eq!(result.minute, expected.minute);
+        assert_eq!(result.second, expected.second);
+    }
+
+    #[test]
+    fn test_convert_instant_to_time_after_delay() {
+        let start_time = Instant::now();
+        thread::sleep(Duration::from_secs(1));
+        let result = convert_instant_to_time(start_time);
+        let now = Local::now().time();
+        let expected = Time::new(
+            now.hour(),
+            now.minute(),
+            now.second(),
+            now.nanosecond() / 1_000_000,
+        );
+
+        assert_eq!(result.hour, expected.hour);
+        assert_eq!(result.minute, expected.minute);
+        assert!(result.second == expected.second || result.second == expected.second - 1.0);
+    }
     #[test]
     fn test_pid_update() {
         let mut pid = PID {
