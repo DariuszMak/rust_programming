@@ -221,6 +221,15 @@ mod tests {
     }
 
     #[test]
+    fn test_circled_clock_angles() {
+        let time: Time = Time::new(33, 65, 61, 2);
+        let angles = calculate_clock_angles(&time);
+        assert_eq!(angles.seconds, 61.002);
+        assert_eq!(angles.minutes, 66.0167);
+        assert_eq!(angles.hours, 34.100277);
+    }
+
+    #[test]
     fn test_clock_tick_updates_time() {
         let mut app = ClockApp::default();
         let initial_time = app.get_current_time();
