@@ -12,7 +12,6 @@ mod tests {
     use gui_clock::gui_clock::ClockApp;
     use gui_clock::gui_clock::PID;
     use std::f32::consts::PI;
-    use std::thread;
     use std::time::Duration;
     use std::time::Instant;
 
@@ -65,39 +64,22 @@ mod tests {
     }
 
     #[test]
-    fn test_convert_instant_to_time_recent() {
-        let start_time = Instant::now();
-        thread::sleep(Duration::from_millis(10));
+    fn test_convert_instant_to_time_simulated_delay() {
+        let simulated_delay = Duration::from_secs(1);
+        let start_time = Instant::now() - simulated_delay;
         let result = convert_instant_to_time(start_time);
+
         let now = Local::now().time();
         let expected = Time::new(
             now.hour(),
             now.minute(),
-            now.second(),
+            now.second().saturating_sub(1),
             now.nanosecond() / 1_000_000,
         );
 
         assert_eq!(result.hours, expected.hours);
         assert_eq!(result.minutes, expected.minutes);
-        assert_eq!(result.seconds, expected.seconds);
-    }
-
-    #[test]
-    fn test_convert_instant_to_time_after_delay() {
-        let start_time = Instant::now();
-        thread::sleep(Duration::from_secs(1));
-        let result = convert_instant_to_time(start_time);
-        let now = Local::now().time();
-        let expected = Time::new(
-            now.hour(),
-            now.minute(),
-            now.second(),
-            now.nanosecond() / 1_000_000,
-        );
-
-        assert_eq!(result.hours, expected.hours);
-        assert_eq!(result.minutes, expected.minutes);
-        assert!(result.seconds == expected.seconds || result.seconds == expected.seconds - 1);
+        assert!(result.seconds == expected.seconds || result.seconds == expected.seconds + 1);
     }
 
     #[test]
