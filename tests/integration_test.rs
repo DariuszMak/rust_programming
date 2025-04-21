@@ -23,7 +23,7 @@ mod tests {
     fn test_decompose_from_milliseconds() {
         let duration = Duration::from_millis(1001);
 
-        let components = decompose_duration(duration);
+        let components = decompose_duration(duration, false);
         assert_eq!(components.hours, 0);
         assert_eq!(components.minutes, 0);
         assert_eq!(components.seconds, 1);
@@ -34,7 +34,7 @@ mod tests {
     fn test_decompose_one_minute_and_a_second() {
         let duration = Duration::from_secs(61);
 
-        let components = decompose_duration(duration);
+        let components = decompose_duration(duration, false);
         assert_eq!(components.hours, 0);
         assert_eq!(components.minutes, 1);
         assert_eq!(components.seconds, 1);
@@ -45,7 +45,7 @@ mod tests {
     fn test_decompose_exact_one_hour() {
         let duration = Duration::from_secs(3600);
 
-        let components = decompose_duration(duration);
+        let components = decompose_duration(duration, false);
         assert_eq!(components.hours, 1);
         assert_eq!(components.minutes, 0);
         assert_eq!(components.seconds, 0);
@@ -53,10 +53,21 @@ mod tests {
     }
 
     #[test]
+    fn test_decompose_to_seconds_only() {
+        let duration = Duration::from_millis(2 * 60 * 60 * 1000 + 34 * 60 * 1000 + 56 * 1000 + 789);
+
+        let components = decompose_duration(duration, true);
+        assert_eq!(components.hours, 0);
+        assert_eq!(components.minutes, 0);
+        assert_eq!(components.seconds, 9296);
+        assert_eq!(components.milliseconds, 789);
+    }
+
+    #[test]
     fn test_decompose_hours_minutes_seconds_millis() {
         let duration = Duration::from_millis(2 * 60 * 60 * 1000 + 34 * 60 * 1000 + 56 * 1000 + 789);
 
-        let components = decompose_duration(duration);
+        let components = decompose_duration(duration, false);
         assert_eq!(components.hours, 2);
         assert_eq!(components.minutes, 34);
         assert_eq!(components.seconds, 56);
