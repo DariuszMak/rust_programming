@@ -170,36 +170,36 @@ mod tests {
     fn test_midnight_angles() {
         let time = make_time(0, 0, 0);
         let angles = calculate_clock_angles(&time);
-        assert_eq!(angles.second, 0.0);
-        assert_eq!(angles.minute, 0.0);
-        assert_eq!(angles.hour, 0.0);
+        assert_eq!(angles.seconds, 0.0);
+        assert_eq!(angles.minutes, 0.0);
+        assert_eq!(angles.hours, 0.0);
     }
 
     #[test]
     fn test_noon_angles() {
         let time = make_time(12, 0, 0);
         let angles = calculate_clock_angles(&time);
-        assert_eq!(angles.second, 0.0);
-        assert_eq!(angles.minute, 0.0);
-        assert_eq!(angles.hour, 12.0);
+        assert_eq!(angles.seconds, 0.0);
+        assert_eq!(angles.minutes, 0.0);
+        assert_eq!(angles.hours, 12.0);
     }
 
     #[test]
     fn test_maximum_angles() {
         let time = make_time(23, 59, 59);
         let angles = calculate_clock_angles(&time);
-        assert_eq!(angles.second, 59.0);
-        assert_eq!(angles.minute, 59.983334);
-        assert_eq!(angles.hour, 23.999722);
+        assert_eq!(angles.seconds, 59.0);
+        assert_eq!(angles.minutes, 59.983334);
+        assert_eq!(angles.hours, 23.999722);
     }
 
     #[test]
     fn test_half_past_three() {
         let time = make_time(3, 30, 0);
         let angles = calculate_clock_angles(&time);
-        assert_eq!(angles.second, 0.0);
-        assert_eq!(angles.minute, 30.0);
-        assert_eq!(angles.hour, 3.5);
+        assert_eq!(angles.seconds, 0.0);
+        assert_eq!(angles.minutes, 30.0);
+        assert_eq!(angles.hours, 3.5);
     }
 
     #[test]

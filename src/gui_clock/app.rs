@@ -103,9 +103,9 @@ impl App for ClockApp {
 
         let calculated_angles = start_time_clock_angles + duration_time_clock_angles;
 
-        let pid_second_error = calculated_angles.second - self.pid_second;
-        let pid_minute_error = calculated_angles.minute - self.pid_minute;
-        let pid_hour_error = calculated_angles.hour - self.pid_hour;
+        let pid_second_error = calculated_angles.seconds - self.pid_second;
+        let pid_minute_error = calculated_angles.minutes - self.pid_minute;
+        let pid_hour_error = calculated_angles.hours - self.pid_hour;
 
         self.pid_second += self.second_pid.update(pid_second_error);
         self.pid_minute += self.minute_pid.update(pid_minute_error);

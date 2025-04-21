@@ -88,9 +88,9 @@ impl Time {
 
 #[derive(Debug, Clone, Copy)]
 pub struct ClockAngles {
-    pub second: f32,
-    pub minute: f32,
-    pub hour: f32,
+    pub seconds: f32,
+    pub minutes: f32,
+    pub hours: f32,
 }
 
 impl Add for ClockAngles {
@@ -98,9 +98,9 @@ impl Add for ClockAngles {
 
     fn add(self, other: ClockAngles) -> ClockAngles {
         ClockAngles {
-            second: self.second + other.second,
-            minute: self.minute + other.minute,
-            hour: self.hour + other.hour,
+            seconds: self.seconds + other.seconds,
+            minutes: self.minutes + other.minutes,
+            hours: self.hours + other.hours,
         }
     }
 }
@@ -110,8 +110,8 @@ pub fn calculate_clock_angles(time: &Time) -> ClockAngles {
     let hour_angle = time.hours as f32 + minute_angle / 60.0;
 
     ClockAngles {
-        second: second_angle,
-        minute: minute_angle,
-        hour: hour_angle,
+        seconds: second_angle,
+        minutes: minute_angle,
+        hours: hour_angle,
     }
 }
