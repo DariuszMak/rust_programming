@@ -29,10 +29,10 @@ mod tests {
         let duration = Duration::from_secs(3600);
 
         let components = decompose_duration(duration);
-        assert_eq!(components.hour, 1);
-        assert_eq!(components.minute, 0);
-        assert_eq!(components.second, 0);
-        assert_eq!(components.millisecond, 0);
+        assert_eq!(components.hours, 1);
+        assert_eq!(components.minutes, 0);
+        assert_eq!(components.seconds, 0);
+        assert_eq!(components.milliseconds, 0);
     }
 
     #[test]
@@ -40,10 +40,10 @@ mod tests {
         let duration = Duration::from_millis(2 * 60 * 60 * 1000 + 34 * 60 * 1000 + 56 * 1000 + 789);
 
         let components = decompose_duration(duration);
-        assert_eq!(components.hour, 2);
-        assert_eq!(components.minute, 34);
-        assert_eq!(components.second, 56);
-        assert_eq!(components.millisecond, 789);
+        assert_eq!(components.hours, 2);
+        assert_eq!(components.minutes, 34);
+        assert_eq!(components.seconds, 56);
+        assert_eq!(components.milliseconds, 789);
     }
 
     #[test]
@@ -59,9 +59,9 @@ mod tests {
             now.nanosecond() / 1_000_000,
         );
 
-        assert_eq!(result.hour, expected.hour);
-        assert_eq!(result.minute, expected.minute);
-        assert_eq!(result.second, expected.second);
+        assert_eq!(result.hours, expected.hours);
+        assert_eq!(result.minutes, expected.minutes);
+        assert_eq!(result.seconds, expected.seconds);
     }
 
     #[test]
@@ -77,9 +77,9 @@ mod tests {
             now.nanosecond() / 1_000_000,
         );
 
-        assert_eq!(result.hour, expected.hour);
-        assert_eq!(result.minute, expected.minute);
-        assert!(result.second == expected.second || result.second == expected.second - 1);
+        assert_eq!(result.hours, expected.hours);
+        assert_eq!(result.minutes, expected.minutes);
+        assert!(result.seconds == expected.seconds || result.seconds == expected.seconds - 1);
     }
 
     #[test]
