@@ -86,8 +86,9 @@ impl App for ClockApp {
             self.minute_pid.reset();
             self.hour_pid.reset();
         }
-
+        self.current_time = Instant::now();
         let start_time_converted = convert_instant_to_time(self.start_time);
+        let current_time_converted = convert_instant_to_time(self.current_time);
 
         let start_time_clock_angles: ClockAngles = calculate_clock_angles(&start_time_converted);
 
@@ -119,10 +120,10 @@ impl App for ClockApp {
 
                 let formatted_time = format!(
                     "{:02}:{:02}:{:02}.{:03}",
-                    start_time_converted.hour,
-                    start_time_converted.minute,
-                    start_time_converted.second,
-                    start_time_converted.milisecond
+                    current_time_converted.hour,
+                    current_time_converted.minute,
+                    current_time_converted.second,
+                    current_time_converted.milisecond
                 );
                 ui.label(egui::RichText::new(formatted_time).monospace().size(24.0));
 
