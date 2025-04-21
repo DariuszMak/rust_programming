@@ -69,19 +69,19 @@ impl ClockPid {
     }
 }
 pub struct Time {
-    pub millisecond: u32,
-    pub second: u32,
-    pub minute: u32,
-    pub hour: u32,
+    pub milliseconds: u32,
+    pub seconds: u32,
+    pub minutes: u32,
+    pub hours: u32,
 }
 
 impl Time {
     pub fn new(hour: u32, minute: u32, second: u32, millisecond: u32) -> Self {
         Self {
-            millisecond,
-            second,
-            minute,
-            hour,
+            milliseconds: millisecond,
+            seconds: second,
+            minutes: minute,
+            hours: hour,
         }
     }
 }
@@ -105,9 +105,9 @@ impl Add for ClockAngles {
     }
 }
 pub fn calculate_clock_angles(time: &Time) -> ClockAngles {
-    let second_angle = time.second as f32 + time.millisecond as f32 / 1e3;
-    let minute_angle = time.minute as f32 + second_angle / 60.0;
-    let hour_angle = time.hour as f32 + minute_angle / 60.0;
+    let second_angle = time.seconds as f32 + time.milliseconds as f32 / 1e3;
+    let minute_angle = time.minutes as f32 + second_angle / 60.0;
+    let hour_angle = time.hours as f32 + minute_angle / 60.0;
 
     ClockAngles {
         second: second_angle,

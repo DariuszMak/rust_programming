@@ -117,10 +117,10 @@ impl App for ClockApp {
 
                 let formatted_time = format!(
                     "{:02}:{:02}:{:02}.{:03}",
-                    current_time_converted.hour,
-                    current_time_converted.minute,
-                    current_time_converted.second,
-                    current_time_converted.millisecond
+                    current_time_converted.hours,
+                    current_time_converted.minutes,
+                    current_time_converted.seconds,
+                    current_time_converted.milliseconds
                 );
                 ui.label(egui::RichText::new(formatted_time).monospace().size(24.0));
 
