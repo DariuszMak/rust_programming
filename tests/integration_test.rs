@@ -20,8 +20,26 @@ mod tests {
         (a - b).abs() < epsilon
     }
 
-    fn make_time(hour: u32, minute: u32, second: u32) -> Time {
-        Time::new(hour, minute, second, 0)
+    #[test]
+    fn test_decompose_from_milliseconds() {
+        let duration = Duration::from_millis(1001);
+
+        let components = decompose_duration(duration);
+        assert_eq!(components.hours, 0);
+        assert_eq!(components.minutes, 0);
+        assert_eq!(components.seconds, 1);
+        assert_eq!(components.milliseconds, 1);
+    }
+
+    #[test]
+    fn test_decompose_one_minute_and_a_second() {
+        let duration = Duration::from_secs(61);
+
+        let components = decompose_duration(duration);
+        assert_eq!(components.hours, 0);
+        assert_eq!(components.minutes, 1);
+        assert_eq!(components.seconds, 1);
+        assert_eq!(components.milliseconds, 0);
     }
 
     #[test]
@@ -168,7 +186,7 @@ mod tests {
 
     #[test]
     fn test_midnight_angles() {
-        let time = make_time(0, 0, 0);
+        let time: Time = Time::new(0, 0, 0, 0);
         let angles = calculate_clock_angles(&time);
         assert_eq!(angles.seconds, 0.0);
         assert_eq!(angles.minutes, 0.0);
@@ -177,7 +195,7 @@ mod tests {
 
     #[test]
     fn test_noon_angles() {
-        let time = make_time(12, 0, 0);
+        let time: Time = Time::new(12, 0, 0, 0);
         let angles = calculate_clock_angles(&time);
         assert_eq!(angles.seconds, 0.0);
         assert_eq!(angles.minutes, 0.0);
@@ -186,7 +204,7 @@ mod tests {
 
     #[test]
     fn test_maximum_angles() {
-        let time = make_time(23, 59, 59);
+        let time: Time = Time::new(23, 59, 59, 0);
         let angles = calculate_clock_angles(&time);
         assert_eq!(angles.seconds, 59.0);
         assert_eq!(angles.minutes, 59.983334);
@@ -195,7 +213,7 @@ mod tests {
 
     #[test]
     fn test_half_past_three() {
-        let time = make_time(3, 30, 0);
+        let time: Time = Time::new(3, 30, 0, 0);
         let angles = calculate_clock_angles(&time);
         assert_eq!(angles.seconds, 0.0);
         assert_eq!(angles.minutes, 30.0);
