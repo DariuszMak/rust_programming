@@ -70,23 +70,27 @@ impl ClockApp {
     pub fn set_start_time(&mut self, time: Instant) {
         self.start_time = time;
     }
+
+    fn reset(&mut self) {
+        self.start_time = Instant::now();
+        self.current_time = self.start_time;
+        self.pid_second = 0.0;
+        self.pid_minute = 0.0;
+        self.pid_hour = 0.0;
+        self.second_pid.reset();
+        self.minute_pid.reset();
+        self.hour_pid.reset();
+    }
 }
 
 impl App for ClockApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        if ctx.input(|i| i.key_pressed(Key::R)) {
+            self.reset();
+        }
+
         self.tick();
 
-        if ctx.input(|i| i.key_pressed(Key::R)) {
-            self.start_time = Instant::now();
-            self.current_time = self.start_time;
-            self.pid_second = 0.0;
-            self.pid_minute = 0.0;
-            self.pid_hour = 0.0;
-            self.second_pid.reset();
-            self.minute_pid.reset();
-            self.hour_pid.reset();
-        }
-        self.current_time = Instant::now();
         let start_time_converted = convert_instant_to_time(self.start_time);
         let current_time_converted = convert_instant_to_time(self.current_time);
 
