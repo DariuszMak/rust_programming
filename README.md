@@ -24,7 +24,7 @@ cargo clean ; git clean -fxd ; clear ; cargo fmt --all --verbose ; cargo test ; 
 cargo clippy -- --warn clippy::pedantic ;  
 ```
 
-##### Create a dump to file (Linux-based environment only) - seach in stash list
+##### Create a dump to file (Linux-based environment only) - seach in stash list, close IDE before operation
 
 ```sh
 sudo git clean -fxd ; tree -if --noreport | xargs -I {} sh -c '[ -f "{}" ] && echo "{}" && cat "{}" && echo' > dump.txt ; git add -A ; git stash save 'dump snapshot' ; 
