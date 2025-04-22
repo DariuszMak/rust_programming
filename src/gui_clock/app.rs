@@ -124,13 +124,14 @@ impl App for ClockApp {
                 );
                 ui.label(egui::RichText::new(formatted_time).monospace().size(24.0));
 
+                let available_size = ui.available_size_before_wrap();
+                let size = available_size.min_elem();
                 let (rect, _response): (egui::Rect, egui::Response) =
-                    ui.allocate_exact_size(Vec2::splat(300.0), egui::Sense::hover());
+                    ui.allocate_exact_size(Vec2::splat(size), egui::Sense::hover());
                 let painter = ui.painter();
 
-                let mut center: egui::Pos2 = rect.center();
-                center.y += 100.0;
-                let radius = rect.width().min(rect.height()) / 1.5;
+                let center = rect.center();
+                let radius = size * 0.4;
 
                 painter.circle_stroke(
                     center,
