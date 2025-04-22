@@ -27,7 +27,7 @@ cargo clippy -- --warn clippy::pedantic ;
 ##### Create a dump to file (Linux-based environment only) - seach in stash list
 
 ```sh
-git clean -fxd ; tree -if --noreport | xargs -I {} sh -c '[ -f "{}" ] && echo "{}" && cat "{}" && echo' > dump.txt ; git add -A ; git stash save 'dump snapshot' ; 
+sudo git clean -fxd ; tree -if --noreport | xargs -I {} sh -c '[ -f "{}" ] && echo "{}" && cat "{}" && echo' > dump.txt ; git add -A ; git stash save 'dump snapshot' ; 
 ```
 
 Sometimes it's worth cleaning the repository in native system (remember to stash changes before the operation).
