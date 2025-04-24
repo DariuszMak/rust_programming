@@ -4,7 +4,7 @@ use std::time::{Duration, Instant};
 use std::{f32::consts::PI, ops::Add};
 
 pub fn decompose_duration(diff_ms: Duration, to_seconds_only: bool) -> Time {
-    let diff_ms = diff_ms.as_millis() as u32;
+    let diff_ms = u32::try_from(diff_ms.as_millis()).unwrap();
     let hours = if !to_seconds_only {
         diff_ms / (1000 * 60 * 60)
     } else {
