@@ -21,7 +21,7 @@ cargo clean ; git clean -fxd ; clear ; cargo fmt --all --verbose ; cargo test ; 
 ##### Very strict linting
 
 ```sh
-cargo clippy -- --warn clippy::pedantic ;  
+clear ; cargo clippy -- --warn clippy::pedantic ;  
 ```
 
 ##### Create a dump to file (Linux-based environment only) - seach in stash list, close IDE before operation
