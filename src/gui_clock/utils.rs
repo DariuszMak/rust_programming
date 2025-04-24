@@ -5,17 +5,17 @@ use std::{f32::consts::PI, ops::Add};
 
 pub fn decompose_duration(diff_ms: Duration, to_seconds_only: bool) -> Time {
     let diff_ms = u32::try_from(diff_ms.as_millis()).unwrap();
-    let hours = if !to_seconds_only {
-        diff_ms / (1000 * 60 * 60)
-    } else {
+    let hours = if to_seconds_only {
         0
+    } else {
+        diff_ms / (1000 * 60 * 60)
     };
 
     let remaining_ms_after_hours = diff_ms - hours * 60 * 60 * 1000;
-    let minutes = if !to_seconds_only {
-        remaining_ms_after_hours / (1000 * 60)
-    } else {
+    let minutes = if to_seconds_only {
         0
+    } else {
+        remaining_ms_after_hours / (1000 * 60)
     };
 
     let remaining_ms_after_minutes = remaining_ms_after_hours - minutes * 60 * 1000;
