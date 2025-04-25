@@ -30,8 +30,6 @@ clear ; cargo clippy -- --warn clippy::pedantic ;
 sudo git clean -fxd ; tree -if --noreport | xargs -I {} sh -c '[ -f "{}" ] && echo "{}" && cat "{}" && echo' > dump.txt ; git add -A ; git stash save 'dump snapshot' ; 
 ```
 
-Sometimes it's worth cleaning the repository in native system (remember to stash changes before the operation).
-
 #### Update Rust
 
 ```sh
