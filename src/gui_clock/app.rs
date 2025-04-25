@@ -7,7 +7,7 @@ use super::polar_to_cartesian;
 use super::utils::calculate_clock_angles;
 use super::utils::convert_instant_to_time;
 use super::utils::decompose_duration;
-use super::utils::ClockPid;
+use super::utils::ClockPID;
 use super::utils::Time;
 use super::utils::PID;
 use super::HandAngles;
@@ -139,7 +139,7 @@ impl App for ClockApp {
                     egui::Stroke::new(2.0, ui.visuals().text_color()),
                 );
 
-                let clock = ClockPid {
+                let clock = ClockPID {
                     pid_second: self.pid_second,
                     pid_minute: self.pid_minute,
                     pid_hour: self.pid_hour,
