@@ -62,13 +62,13 @@ pub fn polar_to_cartesian(center: egui::Pos2, length: f32, angle: f32) -> egui::
     )
 }
 
-pub struct ClockPid {
+pub struct ClockPID {
     pub pid_second: f32,
     pub pid_minute: f32,
     pub pid_hour: f32,
 }
 
-impl ClockPid {
+impl ClockPID {
     pub fn angles_in_radians(&self) -> (f32, f32, f32) {
         let second_angle = (self.pid_second / 60.0) * 2.0 * PI;
         let minute_angle = (self.pid_minute / 60.0) * 2.0 * PI;

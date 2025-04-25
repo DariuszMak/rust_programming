@@ -7,7 +7,7 @@ mod tests {
     use gui_clock::gui_clock::polar_to_cartesian;
     use gui_clock::gui_clock::utils::convert_instant_to_time;
     use gui_clock::gui_clock::utils::decompose_duration;
-    use gui_clock::gui_clock::utils::ClockPid;
+    use gui_clock::gui_clock::utils::ClockPID;
     use gui_clock::gui_clock::utils::Time;
     use gui_clock::gui_clock::ClockApp;
     use gui_clock::gui_clock::PID;
@@ -112,7 +112,7 @@ mod tests {
 
     #[test]
     fn test_clock_pid_angles_in_radians() {
-        let clock_pid = ClockPid {
+        let clock_pid = ClockPID {
             pid_second: 15.0,
             pid_minute: 30.0,
             pid_hour: 6.0,
@@ -127,7 +127,7 @@ mod tests {
 
     #[test]
     fn test_angles_at_zero() {
-        let clock = ClockPid {
+        let clock = ClockPID {
             pid_second: 0.0,
             pid_minute: 0.0,
             pid_hour: 0.0,
@@ -140,7 +140,7 @@ mod tests {
 
     #[test]
     fn test_angles_at_halfway() {
-        let clock = ClockPid {
+        let clock = ClockPID {
             pid_second: 30.0,
             pid_minute: 30.0,
             pid_hour: 6.0,
@@ -153,7 +153,7 @@ mod tests {
 
     #[test]
     fn test_angles_at_full() {
-        let clock = ClockPid {
+        let clock = ClockPID {
             pid_second: 60.0,
             pid_minute: 60.0,
             pid_hour: 12.0,
@@ -166,7 +166,7 @@ mod tests {
 
     #[test]
     fn test_quarter_angles() {
-        let clock = ClockPid {
+        let clock = ClockPID {
             pid_second: 15.0,
             pid_minute: 15.0,
             pid_hour: 3.0,
