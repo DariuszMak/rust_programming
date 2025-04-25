@@ -1,1 +1,1 @@
-pub mod gui_clock;
+pub mod rust_clock_gui;

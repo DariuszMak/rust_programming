@@ -1,4 +1,4 @@
-use gui_clock::gui_clock::ClockApp;
+use rust_clock_gui::rust_clock_gui::ClockApp;
 
 fn main() -> eframe::Result<()> {
     let options = eframe::NativeOptions::default();
