@@ -10,7 +10,7 @@ use super::utils::decompose_duration;
 use super::utils::ClockPid;
 use super::utils::Time;
 use super::utils::PID;
-use super::ClockAngles;
+use super::HandAngles;
 
 pub struct ClockApp {
     start_time: Instant,
@@ -98,8 +98,8 @@ impl App for ClockApp {
         let duration = self.current_time.duration_since(self.start_time);
         let duration_time: Time = decompose_duration(duration, true);
 
-        let start_time_clock_angles: ClockAngles = calculate_clock_angles(&start_time_converted);
-        let duration_time_clock_angles: ClockAngles = calculate_clock_angles(&duration_time);
+        let start_time_clock_angles: HandAngles = calculate_clock_angles(&start_time_converted);
+        let duration_time_clock_angles: HandAngles = calculate_clock_angles(&duration_time);
 
         let calculated_angles = start_time_clock_angles + duration_time_clock_angles;
 
