@@ -123,6 +123,7 @@ impl App for ClockApp {
                     current_time_converted.milliseconds
                 );
                 ui.label(egui::RichText::new(formatted_time).monospace().size(24.0));
+                ui.separator();
 
                 let available_size = ui.available_size_before_wrap();
                 let size = available_size.min_elem();
