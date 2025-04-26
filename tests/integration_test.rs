@@ -1,7 +1,9 @@
 #[cfg(test)]
 mod tests {
+    use chrono::Datelike;
     use chrono::Local;
     use chrono::Timelike;
+
     use eframe::egui::pos2;
     use rust_clock_gui::rust_clock_gui::calculate_clock_angles;
     use rust_clock_gui::rust_clock_gui::polar_to_cartesian;
@@ -35,7 +37,6 @@ mod tests {
         let simulated_delay = Duration::from_secs(1);
         let start_time = SystemTime::now() - simulated_delay;
         let result = convert_system_time_to_time(start_time);
-
         let now = Local::now().time();
         let expected = Time::new(
             1970,
@@ -54,9 +55,22 @@ mod tests {
 
     #[test]
     fn test_decompose_from_milliseconds() {
-        let duration = Duration::from_millis(1001);
+        let milliseconds = 1001;
 
-        let components = decompose_duration(duration, false);
+        let duration = Duration::from_millis(milliseconds);
+        let current_date = Local::now()
+            .date_naive()
+            .and_hms_opt(0, 0, 0)
+            .unwrap()
+            .and_local_timezone(Local)
+            .unwrap();
+
+        let expected_date = current_date + chrono::Duration::milliseconds(milliseconds as i64);
+        let components = decompose_duration(duration, current_date, false);
+
+        assert_eq!(components.year, expected_date.year());
+        assert_eq!(components.month, expected_date.month());
+        assert_eq!(components.day, expected_date.day());
         assert_eq!(components.hours, 0);
         assert_eq!(components.minutes, 0);
         assert_eq!(components.seconds, 1);
@@ -65,9 +79,22 @@ mod tests {
 
     #[test]
     fn test_decompose_one_minute_and_a_second() {
-        let duration = Duration::from_secs(61);
+        let seconds = 61;
 
-        let components = decompose_duration(duration, false);
+        let duration = Duration::from_secs(seconds);
+        let current_date = Local::now()
+            .date_naive()
+            .and_hms_opt(0, 0, 0)
+            .unwrap()
+            .and_local_timezone(Local)
+            .unwrap();
+
+        let expected_date = current_date + chrono::Duration::seconds(seconds as i64);
+        let components = decompose_duration(duration, current_date, false);
+
+        assert_eq!(components.year, expected_date.year());
+        assert_eq!(components.month, expected_date.month());
+        assert_eq!(components.day, expected_date.day());
         assert_eq!(components.hours, 0);
         assert_eq!(components.minutes, 1);
         assert_eq!(components.seconds, 1);
@@ -76,9 +103,22 @@ mod tests {
 
     #[test]
     fn test_decompose_exact_one_hour() {
-        let duration = Duration::from_secs(3600);
+        let seconds = 3600;
 
-        let components = decompose_duration(duration, false);
+        let duration = Duration::from_secs(seconds);
+        let current_date = Local::now()
+            .date_naive()
+            .and_hms_opt(0, 0, 0)
+            .unwrap()
+            .and_local_timezone(Local)
+            .unwrap();
+
+        let expected_date = current_date + chrono::Duration::seconds(seconds as i64);
+        let components = decompose_duration(duration, current_date, false);
+
+        assert_eq!(components.year, expected_date.year());
+        assert_eq!(components.month, expected_date.month());
+        assert_eq!(components.day, expected_date.day());
         assert_eq!(components.hours, 1);
         assert_eq!(components.minutes, 0);
         assert_eq!(components.seconds, 0);
@@ -87,9 +127,22 @@ mod tests {
 
     #[test]
     fn test_decompose_hours_minutes_seconds_millis_to_seconds_only() {
-        let duration = Duration::from_millis(2 * 60 * 60 * 1000 + 34 * 60 * 1000 + 56 * 1000 + 789);
+        let milliseconds = 2 * 60 * 60 * 1000 + 34 * 60 * 1000 + 56 * 1000 + 789;
 
-        let components = decompose_duration(duration, true);
+        let duration = Duration::from_millis(milliseconds);
+        let current_date = Local::now()
+            .date_naive()
+            .and_hms_opt(0, 0, 0)
+            .unwrap()
+            .and_local_timezone(Local)
+            .unwrap();
+
+        let expected_date = current_date + chrono::Duration::milliseconds(milliseconds as i64);
+        let components = decompose_duration(duration, current_date, true);
+
+        assert_eq!(components.year, expected_date.year());
+        assert_eq!(components.month, expected_date.month());
+        assert_eq!(components.day, expected_date.day());
         assert_eq!(components.hours, 0);
         assert_eq!(components.minutes, 0);
         assert_eq!(components.seconds, 9296);
@@ -98,9 +151,22 @@ mod tests {
 
     #[test]
     fn test_decompose_hours_minutes_seconds_millis() {
-        let duration = Duration::from_millis(2 * 60 * 60 * 1000 + 34 * 60 * 1000 + 56 * 1000 + 789);
+        let milliseconds = 2 * 60 * 60 * 1000 + 34 * 60 * 1000 + 56 * 1000 + 789;
 
-        let components = decompose_duration(duration, false);
+        let duration = Duration::from_millis(milliseconds);
+        let current_date = Local::now()
+            .date_naive()
+            .and_hms_opt(0, 0, 0)
+            .unwrap()
+            .and_local_timezone(Local)
+            .unwrap();
+
+        let expected_date = current_date + chrono::Duration::milliseconds(milliseconds as i64);
+        let components = decompose_duration(duration, current_date, false);
+
+        assert_eq!(components.year, expected_date.year());
+        assert_eq!(components.month, expected_date.month());
+        assert_eq!(components.day, expected_date.day());
         assert_eq!(components.hours, 2);
         assert_eq!(components.minutes, 34);
         assert_eq!(components.seconds, 56);
@@ -109,10 +175,22 @@ mod tests {
 
     #[test]
     fn test_decompose_hours_minutes_seconds_millis_more_than_one_day_to_seconds_only() {
-        let duration =
-            Duration::from_millis(26 * 60 * 60 * 1000 + 22 * 60 * 1000 + 34 * 1000 + 329);
+        let milliseconds = 26 * 60 * 60 * 1000 + 22 * 60 * 1000 + 34 * 1000 + 329;
 
-        let components = decompose_duration(duration, true);
+        let duration = Duration::from_millis(milliseconds);
+        let current_date = Local::now()
+            .date_naive()
+            .and_hms_opt(0, 0, 0)
+            .unwrap()
+            .and_local_timezone(Local)
+            .unwrap();
+
+        let expected_date = current_date + chrono::Duration::milliseconds(milliseconds as i64);
+        let components = decompose_duration(duration, current_date, true);
+
+        assert_eq!(components.year, expected_date.year());
+        assert_eq!(components.month, expected_date.month());
+        assert_eq!(components.day, expected_date.day());
         assert_eq!(components.hours, 0);
         assert_eq!(components.minutes, 0);
         assert_eq!(components.seconds, 94954);
@@ -121,11 +199,23 @@ mod tests {
 
     #[test]
     fn test_decompose_hours_minutes_seconds_millis_more_than_one_day() {
-        let duration =
-            Duration::from_millis(26 * 60 * 60 * 1000 + 22 * 60 * 1000 + 34 * 1000 + 329);
+        let milliseconds = 26 * 60 * 60 * 1000 + 22 * 60 * 1000 + 34 * 1000 + 329;
 
-        let components = decompose_duration(duration, false);
-        assert_eq!(components.hours, 26);
+        let duration = Duration::from_millis(milliseconds);
+        let current_date = Local::now()
+            .date_naive()
+            .and_hms_opt(0, 0, 0)
+            .unwrap()
+            .and_local_timezone(Local)
+            .unwrap();
+
+        let expected_date = current_date + chrono::Duration::milliseconds(milliseconds as i64);
+        let components = decompose_duration(duration, current_date, false);
+
+        assert_eq!(components.year, expected_date.year());
+        assert_eq!(components.month, expected_date.month());
+        assert_eq!(components.day, expected_date.day());
+        assert_eq!(components.hours, 2);
         assert_eq!(components.minutes, 22);
         assert_eq!(components.seconds, 34);
         assert_eq!(components.milliseconds, 329);
