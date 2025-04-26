@@ -83,7 +83,7 @@ mod tests {
     }
 
     #[test]
-    fn test_decompose_to_seconds_only() {
+    fn test_decompose_hours_minutes_seconds_millis_to_seconds_only() {
         let duration = Duration::from_millis(2 * 60 * 60 * 1000 + 34 * 60 * 1000 + 56 * 1000 + 789);
 
         let components = decompose_duration(duration, true);
@@ -102,6 +102,30 @@ mod tests {
         assert_eq!(components.minutes, 34);
         assert_eq!(components.seconds, 56);
         assert_eq!(components.milliseconds, 789);
+    }
+
+    #[test]
+    fn test_decompose_hours_minutes_seconds_millis_more_than_one_day_to_seconds_only() {
+        let duration =
+            Duration::from_millis(26 * 60 * 60 * 1000 + 22 * 60 * 1000 + 34 * 1000 + 329);
+
+        let components = decompose_duration(duration, true);
+        assert_eq!(components.hours, 0);
+        assert_eq!(components.minutes, 0);
+        assert_eq!(components.seconds, 94954);
+        assert_eq!(components.milliseconds, 329);
+    }
+
+    #[test]
+    fn test_decompose_hours_minutes_seconds_millis_more_than_one_day() {
+        let duration =
+            Duration::from_millis(26 * 60 * 60 * 1000 + 22 * 60 * 1000 + 34 * 1000 + 329);
+
+        let components = decompose_duration(duration, false);
+        assert_eq!(components.hours, 26);
+        assert_eq!(components.minutes, 22);
+        assert_eq!(components.seconds, 34);
+        assert_eq!(components.milliseconds, 329);
     }
 
     #[test]
