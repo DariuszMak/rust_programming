@@ -1,6 +1,7 @@
-use chrono::{Datelike, Local, Timelike};
+use chrono::{DateTime, Datelike, Duration as ChronoDuration, Local, Timelike};
 use eframe::egui;
-use std::time::{Duration, SystemTime};
+use std::time::SystemTime;
+
 use std::{f32::consts::PI, ops::Add};
 
 pub struct Time {
@@ -50,26 +51,39 @@ pub fn convert_system_time_to_time(start_time: SystemTime) -> Time {
     )
 }
 
-pub fn decompose_duration(diff_ms: Duration, to_seconds_only: bool) -> Time {
-    let diff_ms = u32::try_from(diff_ms.as_millis()).unwrap();
-    let hours = if to_seconds_only {
-        0
-    } else {
-        diff_ms / (1000 * 60 * 60)
-    };
+pub fn decompose_duration(
+    diff: std::time::Duration,
+    now: DateTime<Local>,
+    to_seconds_only: bool,
+) -> Time {
+    let diff_ns = diff.as_nanos();
+    let diff_ms = (diff_ns / 1_000_000) as u64;
+    let milliseconds = (diff_ms % 1000) as u32;
 
-    let remaining_ms_after_hours = diff_ms - hours * 60 * 60 * 1000;
-    let minutes = if to_seconds_only {
-        0
-    } else {
-        remaining_ms_after_hours / (1000 * 60)
-    };
+    let chrono_diff = ChronoDuration::milliseconds(diff_ms as i64);
+    let final_datetime = now + chrono_diff;
 
-    let remaining_ms_after_minutes = remaining_ms_after_hours - minutes * 60 * 1000;
-    let seconds = remaining_ms_after_minutes / 1000;
-    let milliseconds = remaining_ms_after_minutes - seconds * 1000;
-
-    Time::new(1970, 1, 1, hours, minutes, seconds, milliseconds)
+    if to_seconds_only {
+        let total_seconds = (diff_ns / 1_000_000_000) as u32;
+        return Time::new(
+            final_datetime.year(),
+            final_datetime.month(),
+            final_datetime.day(),
+            0,
+            0,
+            total_seconds,
+            milliseconds,
+        );
+    }
+    Time::new(
+        final_datetime.year(),
+        final_datetime.month(),
+        final_datetime.day(),
+        final_datetime.hour(),
+        final_datetime.minute(),
+        final_datetime.second(),
+        final_datetime.timestamp_subsec_millis(),
+    )
 }
 
 pub struct HandAngles {

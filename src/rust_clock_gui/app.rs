@@ -98,7 +98,9 @@ impl App for ClockApp {
         let start_time_converted = convert_system_time_to_time(self.start_time);
 
         let duration = self.current_time.duration_since(self.start_time);
-        let duration_time: Time = decompose_duration(duration.unwrap(), true);
+        let current_datetime = Local::now();
+
+        let duration_time: Time = decompose_duration(duration.unwrap(), current_datetime, true);
 
         let start_time_clock_angles: HandAngles = calculate_clock_angles(&start_time_converted);
         let duration_time_clock_angles: HandAngles = calculate_clock_angles(&duration_time);
