@@ -1,5 +1,6 @@
 #[cfg(test)]
 mod tests {
+    use chrono::DateTime;
     use chrono::Datelike;
     use chrono::Local;
     use chrono::Timelike;
@@ -15,7 +16,6 @@ mod tests {
     use rust_clock_gui::rust_clock_gui::PID;
     use std::f32::consts::PI;
     use std::time::Duration;
-    use std::time::SystemTime;
 
     fn approx_eq(a: f32, b: f32, epsilon: f32) -> bool {
         (a - b).abs() < epsilon
@@ -35,7 +35,7 @@ mod tests {
     #[test]
     fn test_convert_system_time_to_time_simulated_delay() {
         let simulated_delay = Duration::from_secs(1);
-        let start_time = SystemTime::now() - simulated_delay;
+        let start_time = Local::now() - simulated_delay;
         let result = convert_system_time_to_time(start_time);
         let now = Local::now().time();
         let expected = Time::new(
@@ -57,7 +57,7 @@ mod tests {
     fn test_decompose_from_milliseconds() {
         let milliseconds = 1001;
 
-        let duration = Duration::from_millis(milliseconds);
+        let duration = chrono::Duration::milliseconds(milliseconds as i64);
         let current_datetime = Local::now()
             .date_naive()
             .and_hms_opt(0, 0, 0)
@@ -81,7 +81,7 @@ mod tests {
     fn test_decompose_one_minute_and_a_second() {
         let seconds = 61;
 
-        let duration = Duration::from_secs(seconds);
+        let duration = chrono::Duration::seconds(seconds as i64);
         let current_datetime = Local::now()
             .date_naive()
             .and_hms_opt(0, 0, 0)
@@ -105,7 +105,7 @@ mod tests {
     fn test_decompose_exact_one_hour() {
         let seconds = 3600;
 
-        let duration = Duration::from_secs(seconds);
+        let duration = chrono::Duration::seconds(seconds as i64);
         let current_datetime = Local::now()
             .date_naive()
             .and_hms_opt(0, 0, 0)
@@ -129,8 +129,8 @@ mod tests {
     fn test_decompose_hours_minutes_seconds_millis_to_seconds_only() {
         let milliseconds = 2 * 60 * 60 * 1000 + 34 * 60 * 1000 + 56 * 1000 + 789;
 
-        let duration = Duration::from_millis(milliseconds);
-        let current_datetime = Local::now()
+        let duration = chrono::Duration::milliseconds(milliseconds as i64);
+        let current_datetime: DateTime<Local> = Local::now()
             .date_naive()
             .and_hms_opt(0, 0, 0)
             .unwrap()
@@ -153,7 +153,7 @@ mod tests {
     fn test_decompose_hours_minutes_seconds_millis() {
         let milliseconds = 2 * 60 * 60 * 1000 + 34 * 60 * 1000 + 56 * 1000 + 789;
 
-        let duration = Duration::from_millis(milliseconds);
+        let duration = chrono::Duration::milliseconds(milliseconds as i64);
         let current_datetime = Local::now()
             .date_naive()
             .and_hms_opt(0, 0, 0)
@@ -177,7 +177,7 @@ mod tests {
     fn test_decompose_hours_minutes_seconds_millis_more_than_one_day_to_seconds_only() {
         let milliseconds = 26 * 60 * 60 * 1000 + 22 * 60 * 1000 + 34 * 1000 + 329;
 
-        let duration = Duration::from_millis(milliseconds);
+        let duration = chrono::Duration::milliseconds(milliseconds as i64);
         let current_datetime = Local::now()
             .date_naive()
             .and_hms_opt(0, 0, 0)
@@ -201,7 +201,7 @@ mod tests {
     fn test_decompose_hours_minutes_seconds_millis_more_than_one_day() {
         let milliseconds = 26 * 60 * 60 * 1000 + 22 * 60 * 1000 + 34 * 1000 + 329;
 
-        let duration = Duration::from_millis(milliseconds);
+        let duration = chrono::Duration::milliseconds(milliseconds as i64);
         let current_datetime = Local::now()
             .date_naive()
             .and_hms_opt(0, 0, 0)

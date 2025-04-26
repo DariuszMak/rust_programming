@@ -1,6 +1,5 @@
-use chrono::{DateTime, Datelike, Duration as ChronoDuration, Local, Timelike};
+use chrono::{DateTime, Datelike, Duration as ChronoDuration, Local, TimeDelta, Timelike};
 use eframe::egui;
-use std::time::SystemTime;
 
 use std::{f32::consts::PI, ops::Add};
 
@@ -36,9 +35,9 @@ impl Time {
     }
 }
 
-pub fn convert_system_time_to_time(start_time: SystemTime) -> Time {
-    let elapsed = SystemTime::now().duration_since(start_time).unwrap();
-    let recalculated_start = Local::now() - chrono::Duration::from_std(elapsed).unwrap();
+pub fn convert_system_time_to_time(start_time: DateTime<Local>) -> Time {
+    let elapsed = Local::now().signed_duration_since(start_time);
+    let recalculated_start = Local::now() - elapsed;
 
     Time::new(
         recalculated_start.year(),
@@ -51,12 +50,8 @@ pub fn convert_system_time_to_time(start_time: SystemTime) -> Time {
     )
 }
 
-pub fn decompose_duration(
-    diff: std::time::Duration,
-    now: DateTime<Local>,
-    to_seconds_only: bool,
-) -> Time {
-    let diff_ns = diff.as_nanos();
+pub fn decompose_duration(diff: TimeDelta, now: DateTime<Local>, to_seconds_only: bool) -> Time {
+    let diff_ns = diff.num_nanoseconds().unwrap();
     let diff_ms = (diff_ns / 1_000_000) as u64;
     let milliseconds = (diff_ms % 1000) as u32;
 
