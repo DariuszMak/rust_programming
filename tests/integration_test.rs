@@ -20,6 +20,36 @@ mod tests {
     }
 
     #[test]
+    fn test_clock_tick_updates_time() {
+        let mut app = ClockApp::default();
+        let initial_time = app.get_current_time();
+
+        std::thread::sleep(Duration::from_millis(10));
+        app.tick();
+
+        assert!(app.get_current_time() > initial_time);
+    }
+
+    #[test]
+    fn test_convert_instant_to_time_simulated_delay() {
+        let simulated_delay = Duration::from_secs(1);
+        let start_time = Instant::now() - simulated_delay;
+        let result = convert_instant_to_time(start_time);
+
+        let now = Local::now().time();
+        let expected = Time::new(
+            now.hour(),
+            now.minute(),
+            now.second().saturating_sub(1),
+            now.nanosecond() / 1_000_000,
+        );
+
+        assert_eq!(result.hours, expected.hours);
+        assert_eq!(result.minutes, expected.minutes);
+        assert!(result.seconds == expected.seconds || result.seconds == expected.seconds + 1);
+    }
+
+    #[test]
     fn test_decompose_from_milliseconds() {
         let duration = Duration::from_millis(1001);
 
@@ -75,22 +105,48 @@ mod tests {
     }
 
     #[test]
-    fn test_convert_instant_to_time_simulated_delay() {
-        let simulated_delay = Duration::from_secs(1);
-        let start_time = Instant::now() - simulated_delay;
-        let result = convert_instant_to_time(start_time);
+    fn test_midnight_clock_angles() {
+        let time: Time = Time::new(0, 0, 0, 0);
+        let angles = calculate_clock_angles(&time);
+        assert_eq!(angles.seconds, 0.0);
+        assert_eq!(angles.minutes, 0.0);
+        assert_eq!(angles.hours, 0.0);
+    }
 
-        let now = Local::now().time();
-        let expected = Time::new(
-            now.hour(),
-            now.minute(),
-            now.second().saturating_sub(1),
-            now.nanosecond() / 1_000_000,
-        );
+    #[test]
+    fn test_noon_clock_angles() {
+        let time: Time = Time::new(12, 0, 0, 0);
+        let angles = calculate_clock_angles(&time);
+        assert_eq!(angles.seconds, 0.0);
+        assert_eq!(angles.minutes, 0.0);
+        assert_eq!(angles.hours, 12.0);
+    }
 
-        assert_eq!(result.hours, expected.hours);
-        assert_eq!(result.minutes, expected.minutes);
-        assert!(result.seconds == expected.seconds || result.seconds == expected.seconds + 1);
+    #[test]
+    fn test_maximum_clock_angles() {
+        let time: Time = Time::new(23, 59, 59, 0);
+        let angles = calculate_clock_angles(&time);
+        assert_eq!(angles.seconds, 59.0);
+        assert_eq!(angles.minutes, 59.983334);
+        assert_eq!(angles.hours, 23.999722);
+    }
+
+    #[test]
+    fn test_half_past_three_clock_angles() {
+        let time: Time = Time::new(3, 30, 0, 0);
+        let angles = calculate_clock_angles(&time);
+        assert_eq!(angles.seconds, 0.0);
+        assert_eq!(angles.minutes, 30.0);
+        assert_eq!(angles.hours, 3.5);
+    }
+
+    #[test]
+    fn test_circled_clock_angles() {
+        let time: Time = Time::new(33, 65, 61, 2);
+        let angles = calculate_clock_angles(&time);
+        assert_eq!(angles.seconds, 61.002);
+        assert_eq!(angles.minutes, 66.0167);
+        assert_eq!(angles.hours, 34.100277);
     }
 
     #[test]
@@ -175,62 +231,6 @@ mod tests {
         assert!(approx_eq(s, 0.25 * 2.0 * PI, 1e-10));
         assert!(approx_eq(m, 0.25 * 2.0 * PI, 1e-10));
         assert!(approx_eq(h, 0.25 * 2.0 * PI, 1e-10));
-    }
-
-    #[test]
-    fn test_midnight_clock_angles() {
-        let time: Time = Time::new(0, 0, 0, 0);
-        let angles = calculate_clock_angles(&time);
-        assert_eq!(angles.seconds, 0.0);
-        assert_eq!(angles.minutes, 0.0);
-        assert_eq!(angles.hours, 0.0);
-    }
-
-    #[test]
-    fn test_noon_clock_angles() {
-        let time: Time = Time::new(12, 0, 0, 0);
-        let angles = calculate_clock_angles(&time);
-        assert_eq!(angles.seconds, 0.0);
-        assert_eq!(angles.minutes, 0.0);
-        assert_eq!(angles.hours, 12.0);
-    }
-
-    #[test]
-    fn test_maximum_clock_angles() {
-        let time: Time = Time::new(23, 59, 59, 0);
-        let angles = calculate_clock_angles(&time);
-        assert_eq!(angles.seconds, 59.0);
-        assert_eq!(angles.minutes, 59.983334);
-        assert_eq!(angles.hours, 23.999722);
-    }
-
-    #[test]
-    fn test_half_past_three_clock_angles() {
-        let time: Time = Time::new(3, 30, 0, 0);
-        let angles = calculate_clock_angles(&time);
-        assert_eq!(angles.seconds, 0.0);
-        assert_eq!(angles.minutes, 30.0);
-        assert_eq!(angles.hours, 3.5);
-    }
-
-    #[test]
-    fn test_circled_clock_angles() {
-        let time: Time = Time::new(33, 65, 61, 2);
-        let angles = calculate_clock_angles(&time);
-        assert_eq!(angles.seconds, 61.002);
-        assert_eq!(angles.minutes, 66.0167);
-        assert_eq!(angles.hours, 34.100277);
-    }
-
-    #[test]
-    fn test_clock_tick_updates_time() {
-        let mut app = ClockApp::default();
-        let initial_time = app.get_current_time();
-
-        std::thread::sleep(Duration::from_millis(10));
-        app.tick();
-
-        assert!(app.get_current_time() > initial_time);
     }
 
     #[test]
