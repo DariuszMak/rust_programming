@@ -38,16 +38,15 @@ impl Time {
 pub fn convert_system_time_to_time(start_time: SystemTime) -> Time {
     let elapsed = SystemTime::now().duration_since(start_time).unwrap();
     let recalculated_start = Local::now() - chrono::Duration::from_std(elapsed).unwrap();
-    let datetime = recalculated_start;
 
     Time::new(
-        datetime.year(),
-        datetime.month(),
-        datetime.day(),
-        datetime.hour(),
-        datetime.minute(),
-        datetime.second(),
-        datetime.nanosecond() / 1_000_000,
+        recalculated_start.year(),
+        recalculated_start.month(),
+        recalculated_start.day(),
+        recalculated_start.hour(),
+        recalculated_start.minute(),
+        recalculated_start.second(),
+        recalculated_start.nanosecond() / 1_000_000,
     )
 }
 
