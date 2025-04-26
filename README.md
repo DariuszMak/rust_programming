@@ -2,7 +2,11 @@
 
 ## Install Rust
 
-Use rustup: https://rustup.rs/
+Use [rustup](https://rustup.rs/)
+
+## Rust eframe
+
+Documentation: [eframe 0.31.1](https://docs.rs/eframe/0.31.1/)
 
 ## Useful bunch of commands:
 
