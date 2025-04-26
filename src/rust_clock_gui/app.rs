@@ -1,11 +1,11 @@
 use eframe::{egui, egui::Vec2, App};
 use egui::Key;
 use std::f32::consts::PI;
-use std::time::Instant;
+use std::time::SystemTime;
 
 use super::polar_to_cartesian;
 use super::utils::calculate_clock_angles;
-use super::utils::convert_instant_to_time;
+use super::utils::convert_system_time_to_time;
 use super::utils::decompose_duration;
 use super::utils::ClockPID;
 use super::utils::Time;
@@ -13,8 +13,8 @@ use super::utils::PID;
 use super::HandAngles;
 
 pub struct ClockApp {
-    start_time: Instant,
-    current_time: Instant,
+    start_time: SystemTime,
+    current_time: SystemTime,
     pid_second: f32,
     pid_minute: f32,
     pid_hour: f32,
@@ -26,7 +26,7 @@ pub struct ClockApp {
 
 impl Default for ClockApp {
     fn default() -> Self {
-        let now = Instant::now();
+        let now = SystemTime::now();
         Self {
             start_time: now,
             current_time: now,
@@ -56,24 +56,24 @@ impl Default for ClockApp {
 }
 
 impl ClockApp {
-    pub fn get_current_time(&self) -> Instant {
+    pub fn get_current_time(&self) -> SystemTime {
         self.current_time
     }
 
     pub fn tick(&mut self) {
-        self.current_time = Instant::now();
+        self.current_time = SystemTime::now();
     }
 
-    pub fn get_start_time(&self) -> Instant {
+    pub fn get_start_time(&self) -> SystemTime {
         self.start_time
     }
 
-    pub fn set_start_time(&mut self, time: Instant) {
+    pub fn set_start_time(&mut self, time: SystemTime) {
         self.start_time = time;
     }
 
     fn reset(&mut self) {
-        self.start_time = Instant::now();
+        self.start_time = SystemTime::now();
         self.current_time = self.start_time;
         self.pid_second = 0.0;
         self.pid_minute = 0.0;
@@ -92,11 +92,11 @@ impl App for ClockApp {
 
         self.tick();
 
-        let start_time_converted = convert_instant_to_time(self.start_time);
-        let current_time_converted = convert_instant_to_time(self.current_time);
+        let start_time_converted = convert_system_time_to_time(self.start_time);
+        let current_time_converted = convert_system_time_to_time(self.current_time);
 
         let duration = self.current_time.duration_since(self.start_time);
-        let duration_time: Time = decompose_duration(duration, true);
+        let duration_time: Time = decompose_duration(duration.unwrap(), true);
 
         let start_time_clock_angles: HandAngles = calculate_clock_angles(&start_time_converted);
         let duration_time_clock_angles: HandAngles = calculate_clock_angles(&duration_time);

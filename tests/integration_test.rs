@@ -5,7 +5,7 @@ mod tests {
     use eframe::egui::pos2;
     use rust_clock_gui::rust_clock_gui::calculate_clock_angles;
     use rust_clock_gui::rust_clock_gui::polar_to_cartesian;
-    use rust_clock_gui::rust_clock_gui::utils::convert_instant_to_time;
+    use rust_clock_gui::rust_clock_gui::utils::convert_system_time_to_time;
     use rust_clock_gui::rust_clock_gui::utils::decompose_duration;
     use rust_clock_gui::rust_clock_gui::utils::ClockPID;
     use rust_clock_gui::rust_clock_gui::utils::Time;
@@ -13,7 +13,7 @@ mod tests {
     use rust_clock_gui::rust_clock_gui::PID;
     use std::f32::consts::PI;
     use std::time::Duration;
-    use std::time::Instant;
+    use std::time::SystemTime;
 
     fn approx_eq(a: f32, b: f32, epsilon: f32) -> bool {
         (a - b).abs() < epsilon
@@ -31,10 +31,10 @@ mod tests {
     }
 
     #[test]
-    fn test_convert_instant_to_time_simulated_delay() {
+    fn test_convert_system_time_to_time_simulated_delay() {
         let simulated_delay = Duration::from_secs(1);
-        let start_time = Instant::now() - simulated_delay;
-        let result = convert_instant_to_time(start_time);
+        let start_time = SystemTime::now() - simulated_delay;
+        let result = convert_system_time_to_time(start_time);
 
         let now = Local::now().time();
         let expected = Time::new(

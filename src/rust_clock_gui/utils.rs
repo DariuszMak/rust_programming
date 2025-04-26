@@ -1,6 +1,6 @@
 use chrono::{Local, Timelike};
 use eframe::egui;
-use std::time::{Duration, Instant};
+use std::time::{Duration, SystemTime};
 use std::{f32::consts::PI, ops::Add};
 
 pub struct Time {
@@ -21,8 +21,8 @@ impl Time {
     }
 }
 
-pub fn convert_instant_to_time(start_time: Instant) -> Time {
-    let elapsed = Instant::now().duration_since(start_time);
+pub fn convert_system_time_to_time(start_time: SystemTime) -> Time {
+    let elapsed = SystemTime::now().duration_since(start_time).unwrap();
     let recalculated_start = Local::now() - chrono::Duration::from_std(elapsed).unwrap();
     let t = recalculated_start.time();
     Time::new(t.hour(), t.minute(), t.second(), t.nanosecond() / 1_000_000)
