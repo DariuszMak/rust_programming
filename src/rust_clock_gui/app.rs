@@ -1,3 +1,6 @@
+use chrono::DateTime;
+use chrono::Local;
+use chrono::Timelike;
 use eframe::{egui, egui::Vec2, App};
 use egui::Key;
 use std::f32::consts::PI;
@@ -93,7 +96,6 @@ impl App for ClockApp {
         self.tick();
 
         let start_time_converted = convert_system_time_to_time(self.start_time);
-        let current_time_converted = convert_system_time_to_time(self.current_time);
 
         let duration = self.current_time.duration_since(self.start_time);
         let duration_time: Time = decompose_duration(duration.unwrap(), true);
@@ -115,12 +117,13 @@ impl App for ClockApp {
             ui.vertical_centered(|ui| {
                 ui.heading("Analog Clock");
 
+                let datetime: DateTime<Local> = self.current_time.into();
                 let formatted_time = format!(
                     "{:02}:{:02}:{:02}.{:03}",
-                    current_time_converted.hours,
-                    current_time_converted.minutes,
-                    current_time_converted.seconds,
-                    current_time_converted.milliseconds
+                    datetime.hour(),
+                    datetime.minute(),
+                    datetime.second(),
+                    datetime.timestamp_subsec_millis()
                 );
                 ui.label(egui::RichText::new(formatted_time).monospace().size(24.0));
                 ui.separator();
