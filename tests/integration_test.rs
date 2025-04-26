@@ -58,15 +58,15 @@ mod tests {
         let milliseconds = 1001;
 
         let duration = Duration::from_millis(milliseconds);
-        let current_date = Local::now()
+        let current_datetime = Local::now()
             .date_naive()
             .and_hms_opt(0, 0, 0)
             .unwrap()
             .and_local_timezone(Local)
             .unwrap();
 
-        let expected_date = current_date + chrono::Duration::milliseconds(milliseconds as i64);
-        let components = decompose_duration(duration, current_date, false);
+        let expected_date = current_datetime + chrono::Duration::milliseconds(milliseconds as i64);
+        let components = decompose_duration(duration, current_datetime, false);
 
         assert_eq!(components.year, expected_date.year());
         assert_eq!(components.month, expected_date.month());
@@ -82,15 +82,15 @@ mod tests {
         let seconds = 61;
 
         let duration = Duration::from_secs(seconds);
-        let current_date = Local::now()
+        let current_datetime = Local::now()
             .date_naive()
             .and_hms_opt(0, 0, 0)
             .unwrap()
             .and_local_timezone(Local)
             .unwrap();
 
-        let expected_date = current_date + chrono::Duration::seconds(seconds as i64);
-        let components = decompose_duration(duration, current_date, false);
+        let expected_date = current_datetime + chrono::Duration::seconds(seconds as i64);
+        let components = decompose_duration(duration, current_datetime, false);
 
         assert_eq!(components.year, expected_date.year());
         assert_eq!(components.month, expected_date.month());
@@ -106,15 +106,15 @@ mod tests {
         let seconds = 3600;
 
         let duration = Duration::from_secs(seconds);
-        let current_date = Local::now()
+        let current_datetime = Local::now()
             .date_naive()
             .and_hms_opt(0, 0, 0)
             .unwrap()
             .and_local_timezone(Local)
             .unwrap();
 
-        let expected_date = current_date + chrono::Duration::seconds(seconds as i64);
-        let components = decompose_duration(duration, current_date, false);
+        let expected_date = current_datetime + chrono::Duration::seconds(seconds as i64);
+        let components = decompose_duration(duration, current_datetime, false);
 
         assert_eq!(components.year, expected_date.year());
         assert_eq!(components.month, expected_date.month());
@@ -130,15 +130,15 @@ mod tests {
         let milliseconds = 2 * 60 * 60 * 1000 + 34 * 60 * 1000 + 56 * 1000 + 789;
 
         let duration = Duration::from_millis(milliseconds);
-        let current_date = Local::now()
+        let current_datetime = Local::now()
             .date_naive()
             .and_hms_opt(0, 0, 0)
             .unwrap()
             .and_local_timezone(Local)
             .unwrap();
 
-        let expected_date = current_date + chrono::Duration::milliseconds(milliseconds as i64);
-        let components = decompose_duration(duration, current_date, true);
+        let expected_date = current_datetime + chrono::Duration::milliseconds(milliseconds as i64);
+        let components = decompose_duration(duration, current_datetime, true);
 
         assert_eq!(components.year, expected_date.year());
         assert_eq!(components.month, expected_date.month());
@@ -154,15 +154,15 @@ mod tests {
         let milliseconds = 2 * 60 * 60 * 1000 + 34 * 60 * 1000 + 56 * 1000 + 789;
 
         let duration = Duration::from_millis(milliseconds);
-        let current_date = Local::now()
+        let current_datetime = Local::now()
             .date_naive()
             .and_hms_opt(0, 0, 0)
             .unwrap()
             .and_local_timezone(Local)
             .unwrap();
 
-        let expected_date = current_date + chrono::Duration::milliseconds(milliseconds as i64);
-        let components = decompose_duration(duration, current_date, false);
+        let expected_date = current_datetime + chrono::Duration::milliseconds(milliseconds as i64);
+        let components = decompose_duration(duration, current_datetime, false);
 
         assert_eq!(components.year, expected_date.year());
         assert_eq!(components.month, expected_date.month());
@@ -178,15 +178,15 @@ mod tests {
         let milliseconds = 26 * 60 * 60 * 1000 + 22 * 60 * 1000 + 34 * 1000 + 329;
 
         let duration = Duration::from_millis(milliseconds);
-        let current_date = Local::now()
+        let current_datetime = Local::now()
             .date_naive()
             .and_hms_opt(0, 0, 0)
             .unwrap()
             .and_local_timezone(Local)
             .unwrap();
 
-        let expected_date = current_date + chrono::Duration::milliseconds(milliseconds as i64);
-        let components = decompose_duration(duration, current_date, true);
+        let expected_date = current_datetime + chrono::Duration::milliseconds(milliseconds as i64);
+        let components = decompose_duration(duration, current_datetime, true);
 
         assert_eq!(components.year, expected_date.year());
         assert_eq!(components.month, expected_date.month());
@@ -202,15 +202,15 @@ mod tests {
         let milliseconds = 26 * 60 * 60 * 1000 + 22 * 60 * 1000 + 34 * 1000 + 329;
 
         let duration = Duration::from_millis(milliseconds);
-        let current_date = Local::now()
+        let current_datetime = Local::now()
             .date_naive()
             .and_hms_opt(0, 0, 0)
             .unwrap()
             .and_local_timezone(Local)
             .unwrap();
 
-        let expected_date = current_date + chrono::Duration::milliseconds(milliseconds as i64);
-        let components = decompose_duration(duration, current_date, false);
+        let expected_date = current_datetime + chrono::Duration::milliseconds(milliseconds as i64);
+        let components = decompose_duration(duration, current_datetime, false);
 
         assert_eq!(components.year, expected_date.year());
         assert_eq!(components.month, expected_date.month());
