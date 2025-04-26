@@ -3,6 +3,31 @@ use eframe::egui;
 use std::time::{Duration, Instant};
 use std::{f32::consts::PI, ops::Add};
 
+pub struct Time {
+    pub milliseconds: u32,
+    pub seconds: u32,
+    pub minutes: u32,
+    pub hours: u32,
+}
+
+impl Time {
+    pub fn new(hour: u32, minute: u32, second: u32, millisecond: u32) -> Self {
+        Self {
+            milliseconds: millisecond,
+            seconds: second,
+            minutes: minute,
+            hours: hour,
+        }
+    }
+}
+
+pub fn convert_instant_to_time(start_time: Instant) -> Time {
+    let elapsed = Instant::now().duration_since(start_time);
+    let recalculated_start = Local::now() - chrono::Duration::from_std(elapsed).unwrap();
+    let t = recalculated_start.time();
+    Time::new(t.hour(), t.minute(), t.second(), t.nanosecond() / 1_000_000)
+}
+
 pub fn decompose_duration(diff_ms: Duration, to_seconds_only: bool) -> Time {
     let diff_ms = u32::try_from(diff_ms.as_millis()).unwrap();
     let hours = if to_seconds_only {
@@ -25,11 +50,35 @@ pub fn decompose_duration(diff_ms: Duration, to_seconds_only: bool) -> Time {
     Time::new(hours, minutes, seconds, milliseconds)
 }
 
-pub fn convert_instant_to_time(start_time: Instant) -> Time {
-    let elapsed = Instant::now().duration_since(start_time);
-    let recalculated_start = Local::now() - chrono::Duration::from_std(elapsed).unwrap();
-    let t = recalculated_start.time();
-    Time::new(t.hour(), t.minute(), t.second(), t.nanosecond() / 1_000_000)
+#[derive(Debug, Clone, Copy)]
+pub struct HandAngles {
+    pub seconds: f32,
+    pub minutes: f32,
+    pub hours: f32,
+}
+
+impl Add for HandAngles {
+    type Output = HandAngles;
+
+    fn add(self, other: HandAngles) -> HandAngles {
+        HandAngles {
+            seconds: self.seconds + other.seconds,
+            minutes: self.minutes + other.minutes,
+            hours: self.hours + other.hours,
+        }
+    }
+}
+
+pub fn calculate_clock_angles(time: &Time) -> HandAngles {
+    let second_angle = time.seconds as f32 + time.milliseconds as f32 / 1e3;
+    let minute_angle = time.minutes as f32 + second_angle / 60.0;
+    let hour_angle = time.hours as f32 + minute_angle / 60.0;
+
+    HandAngles {
+        seconds: second_angle,
+        minutes: minute_angle,
+        hours: hour_angle,
+    }
 }
 
 #[derive(Default)]
@@ -74,52 +123,5 @@ impl ClockPID {
         let minute_angle = (self.pid_minute / 60.0) * 2.0 * PI;
         let hour_angle = (self.pid_hour / 12.0) * 2.0 * PI;
         (second_angle, minute_angle, hour_angle)
-    }
-}
-pub struct Time {
-    pub milliseconds: u32,
-    pub seconds: u32,
-    pub minutes: u32,
-    pub hours: u32,
-}
-
-impl Time {
-    pub fn new(hour: u32, minute: u32, second: u32, millisecond: u32) -> Self {
-        Self {
-            milliseconds: millisecond,
-            seconds: second,
-            minutes: minute,
-            hours: hour,
-        }
-    }
-}
-
-#[derive(Debug, Clone, Copy)]
-pub struct HandAngles {
-    pub seconds: f32,
-    pub minutes: f32,
-    pub hours: f32,
-}
-
-impl Add for HandAngles {
-    type Output = HandAngles;
-
-    fn add(self, other: HandAngles) -> HandAngles {
-        HandAngles {
-            seconds: self.seconds + other.seconds,
-            minutes: self.minutes + other.minutes,
-            hours: self.hours + other.hours,
-        }
-    }
-}
-pub fn calculate_clock_angles(time: &Time) -> HandAngles {
-    let second_angle = time.seconds as f32 + time.milliseconds as f32 / 1e3;
-    let minute_angle = time.minutes as f32 + second_angle / 60.0;
-    let hour_angle = time.hours as f32 + minute_angle / 60.0;
-
-    HandAngles {
-        seconds: second_angle,
-        minutes: minute_angle,
-        hours: hour_angle,
     }
 }
