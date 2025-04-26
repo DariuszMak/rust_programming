@@ -50,7 +50,6 @@ pub fn decompose_duration(diff_ms: Duration, to_seconds_only: bool) -> Time {
     Time::new(hours, minutes, seconds, milliseconds)
 }
 
-#[derive(Debug, Clone, Copy)]
 pub struct HandAngles {
     pub seconds: f32,
     pub minutes: f32,
