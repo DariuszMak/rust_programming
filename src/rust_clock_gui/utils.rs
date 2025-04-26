@@ -1,22 +1,36 @@
-use chrono::{Local, Timelike};
+use chrono::{Datelike, Local, Timelike};
 use eframe::egui;
 use std::time::{Duration, SystemTime};
 use std::{f32::consts::PI, ops::Add};
 
 pub struct Time {
-    pub milliseconds: u32,
-    pub seconds: u32,
-    pub minutes: u32,
+    pub year: i32,
+    pub month: u32,
+    pub day: u32,
     pub hours: u32,
+    pub minutes: u32,
+    pub seconds: u32,
+    pub milliseconds: u32,
 }
 
 impl Time {
-    pub fn new(hour: u32, minute: u32, second: u32, millisecond: u32) -> Self {
+    pub fn new(
+        year: i32,
+        month: u32,
+        day: u32,
+        hour: u32,
+        minute: u32,
+        second: u32,
+        millisecond: u32,
+    ) -> Self {
         Self {
-            milliseconds: millisecond,
-            seconds: second,
-            minutes: minute,
+            year,
+            month,
+            day,
             hours: hour,
+            minutes: minute,
+            seconds: second,
+            milliseconds: millisecond,
         }
     }
 }
@@ -24,8 +38,17 @@ impl Time {
 pub fn convert_system_time_to_time(start_time: SystemTime) -> Time {
     let elapsed = SystemTime::now().duration_since(start_time).unwrap();
     let recalculated_start = Local::now() - chrono::Duration::from_std(elapsed).unwrap();
-    let t = recalculated_start.time();
-    Time::new(t.hour(), t.minute(), t.second(), t.nanosecond() / 1_000_000)
+    let datetime = recalculated_start;
+
+    Time::new(
+        datetime.year(),
+        datetime.month(),
+        datetime.day(),
+        datetime.hour(),
+        datetime.minute(),
+        datetime.second(),
+        datetime.nanosecond() / 1_000_000,
+    )
 }
 
 pub fn decompose_duration(diff_ms: Duration, to_seconds_only: bool) -> Time {
@@ -47,7 +70,7 @@ pub fn decompose_duration(diff_ms: Duration, to_seconds_only: bool) -> Time {
     let seconds = remaining_ms_after_minutes / 1000;
     let milliseconds = remaining_ms_after_minutes - seconds * 1000;
 
-    Time::new(hours, minutes, seconds, milliseconds)
+    Time::new(1970, 1, 1, hours, minutes, seconds, milliseconds)
 }
 
 pub struct HandAngles {
