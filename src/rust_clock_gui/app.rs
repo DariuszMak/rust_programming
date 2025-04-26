@@ -4,7 +4,6 @@ use chrono::Timelike;
 use eframe::{egui, egui::Vec2, App};
 use egui::Key;
 use std::f32::consts::PI;
-use std::time::SystemTime;
 
 use super::polar_to_cartesian;
 use super::utils::calculate_clock_angles;
@@ -16,8 +15,8 @@ use super::utils::PID;
 use super::HandAngles;
 
 pub struct ClockApp {
-    start_time: SystemTime,
-    current_time: SystemTime,
+    start_time: DateTime<Local>,
+    current_time: DateTime<Local>,
     pid_second: f32,
     pid_minute: f32,
     pid_hour: f32,
@@ -29,7 +28,7 @@ pub struct ClockApp {
 
 impl Default for ClockApp {
     fn default() -> Self {
-        let now = SystemTime::now();
+        let now = Local::now();
         Self {
             start_time: now,
             current_time: now,
@@ -59,24 +58,24 @@ impl Default for ClockApp {
 }
 
 impl ClockApp {
-    pub fn get_current_time(&self) -> SystemTime {
+    pub fn get_current_time(&self) -> DateTime<Local> {
         self.current_time
     }
 
     pub fn tick(&mut self) {
-        self.current_time = SystemTime::now();
+        self.current_time = Local::now();
     }
 
-    pub fn get_start_time(&self) -> SystemTime {
+    pub fn get_start_time(&self) -> DateTime<Local> {
         self.start_time
     }
 
-    pub fn set_start_time(&mut self, time: SystemTime) {
+    pub fn set_start_time(&mut self, time: DateTime<Local>) {
         self.start_time = time;
     }
 
     fn reset(&mut self) {
-        self.start_time = SystemTime::now();
+        self.start_time = Local::now();
         self.current_time = self.start_time;
         self.pid_second = 0.0;
         self.pid_minute = 0.0;
@@ -97,10 +96,10 @@ impl App for ClockApp {
 
         let start_time_converted = convert_system_time_to_time(self.start_time);
 
-        let duration = self.current_time.duration_since(self.start_time);
+        let duration = self.current_time.signed_duration_since(self.start_time);
         let current_datetime = Local::now();
 
-        let duration_time: Time = decompose_duration(duration.unwrap(), current_datetime, true);
+        let duration_time: Time = decompose_duration(duration, current_datetime, true);
 
         let start_time_clock_angles: HandAngles = calculate_clock_angles(&start_time_converted);
         let duration_time_clock_angles: HandAngles = calculate_clock_angles(&duration_time);
@@ -119,7 +118,7 @@ impl App for ClockApp {
             ui.vertical_centered(|ui| {
                 ui.heading("Analog Clock");
 
-                let datetime: DateTime<Local> = self.current_time.into();
+                let datetime: DateTime<Local> = self.current_time;
                 let formatted_time = format!(
                     "{:02}:{:02}:{:02}.{:03}",
                     datetime.hour(),
