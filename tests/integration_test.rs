@@ -1,6 +1,5 @@
 #[cfg(test)]
 mod tests {
-    use chrono::DateTime;
     use chrono::Datelike;
     use chrono::Local;
     use chrono::TimeZone;
@@ -193,7 +192,8 @@ mod tests {
 
     #[test]
     fn test_decompose_hours_minutes_seconds_millis_more_than_one_month_to_seconds_only() {
-        let milliseconds: i64 = 35 * 24 * 60 * 60 * 1000 + 22 * 60 * 1000 + 34 * 1000 + 329;
+        let milliseconds: i64 =
+            35 * 24 * 60 * 60 * 1000 + 5 * 60 * 60 * 1000 + 22 * 60 * 1000 + 34 * 1000 + 329;
 
         let duration = chrono::Duration::milliseconds(milliseconds);
         let current_datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 0, 0).unwrap();
@@ -208,13 +208,14 @@ mod tests {
         assert_eq!(current_datetime.day(), expected_date.day() + 26);
         assert_eq!(components.hours, 0);
         assert_eq!(components.minutes, 0);
-        assert_eq!(components.seconds, 3025354);
+        assert_eq!(components.seconds, 3043354);
         assert_eq!(components.milliseconds, 329);
     }
 
     #[test]
     fn test_decompose_hours_minutes_seconds_millis_more_than_one_month() {
-        let milliseconds: i64 = 35 * 24 * 60 * 60 * 1000 + 22 * 60 * 1000 + 34 * 1000 + 329;
+        let milliseconds: i64 =
+            35 * 24 * 60 * 60 * 1000 + 5 * 60 * 60 * 1000 + 22 * 60 * 1000 + 34 * 1000 + 329;
 
         let duration = chrono::Duration::milliseconds(milliseconds);
         let current_datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 0, 0).unwrap();
@@ -227,7 +228,7 @@ mod tests {
         assert_eq!(current_datetime.month(), expected_date.month() - 2);
         assert_eq!(components.day, expected_date.day());
         assert_eq!(current_datetime.day(), expected_date.day() + 26);
-        assert_eq!(components.hours, 0);
+        assert_eq!(components.hours, 5);
         assert_eq!(components.minutes, 22);
         assert_eq!(components.seconds, 34);
         assert_eq!(components.milliseconds, 329);
