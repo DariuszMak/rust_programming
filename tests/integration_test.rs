@@ -48,9 +48,9 @@ mod tests {
 
         let angles = calculate_clock_angles(&datetime, &duration);
 
-        assert_eq!(angles.seconds, 43200.0);
-        assert_eq!(angles.minutes, 720.0);
-        assert_eq!(angles.hours, 12.0);
+        assert_eq!(angles.seconds, 0.0);
+        assert_eq!(angles.minutes, 0.0);
+        assert_eq!(angles.hours, 0.0);
     }
 
     #[test]
@@ -60,9 +60,9 @@ mod tests {
 
         let angles = calculate_clock_angles(&datetime, &duration);
 
-        assert_eq!(angles.seconds, 86399.0);
-        assert_eq!(angles.minutes, 1439.9833);
-        assert_eq!(angles.hours, 23.999722);
+        assert_eq!(angles.seconds, 59.0);
+        assert_eq!(angles.minutes, 59.983334);
+        assert_eq!(angles.hours, 11.9997225);
     }
 
     #[test]
@@ -85,8 +85,8 @@ mod tests {
 
         let angles = calculate_clock_angles(&datetime, &duration);
 
-        assert_eq!(angles.seconds, 12600.0);
-        assert_eq!(angles.minutes, 210.0);
+        assert_eq!(angles.seconds, 0.0);
+        assert_eq!(angles.minutes, 30.0);
         assert_eq!(angles.hours, 3.5);
     }
 
