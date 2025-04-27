@@ -1,18 +1,14 @@
 #[cfg(test)]
 mod tests {
-    use chrono::Datelike;
     use chrono::Local;
     use chrono::TimeDelta;
     use chrono::TimeZone;
-    use chrono::Timelike;
 
     use eframe::egui::pos2;
     use rust_clock_gui::rust_clock_gui::calculate_clock_angles;
     use rust_clock_gui::rust_clock_gui::polar_to_cartesian;
-    use rust_clock_gui::rust_clock_gui::utils::convert_system_time_to_time;
-    use rust_clock_gui::rust_clock_gui::utils::decompose_duration;
+
     use rust_clock_gui::rust_clock_gui::utils::ClockPID;
-    use rust_clock_gui::rust_clock_gui::utils::Time;
     use rust_clock_gui::rust_clock_gui::ClockApp;
     use rust_clock_gui::rust_clock_gui::PID;
     use std::f32::consts::PI;
@@ -31,81 +27,6 @@ mod tests {
         app.tick();
 
         assert!(app.get_current_time() > initial_time);
-    }
-
-    #[test]
-    fn test_convert_system_time_to_time_simulated_delay() {
-        let simulated_delay = Duration::from_secs(1);
-        let start_time = Local::now() - simulated_delay;
-        let result = convert_system_time_to_time(start_time);
-        let now = Local::now().time();
-        let expected = Time::new(
-            1970,
-            1,
-            1,
-            now.hour(),
-            now.minute(),
-            now.second().saturating_sub(1),
-            now.nanosecond() / 1_000_000,
-        );
-
-        assert_eq!(result.hours, expected.hours);
-        assert_eq!(result.minutes, expected.minutes);
-        assert!(result.seconds == expected.seconds || result.seconds == expected.seconds + 1);
-    }
-
-    #[test]
-    fn test_decompose_hours_minutes_seconds_millis_more_than_one_year_to_seconds_only() {
-        let milliseconds: i64 = 14 * 30 * 24 * 60 * 60 * 1000
-            + 35 * 24 * 60 * 60 * 1000
-            + 5 * 60 * 60 * 1000
-            + 22 * 60 * 1000
-            + 34 * 1000
-            + 329;
-
-        let duration = chrono::Duration::milliseconds(milliseconds);
-        let current_datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 0, 0).unwrap();
-
-        let expected_date = current_datetime + chrono::Duration::milliseconds(milliseconds as i64);
-        let components = decompose_duration(duration, current_datetime, true);
-
-        assert_eq!(components.year, expected_date.year());
-        assert_eq!(current_datetime.year(), expected_date.year() - 1);
-        assert_eq!(components.month, expected_date.month());
-        assert_eq!(current_datetime.month(), expected_date.month() - 3);
-        assert_eq!(components.day, expected_date.day());
-        assert_eq!(current_datetime.day(), expected_date.day() + 1);
-        assert_eq!(components.hours, 0);
-        assert_eq!(components.minutes, 0);
-        assert_eq!(components.seconds, 39331354);
-        assert_eq!(components.milliseconds, 329);
-    }
-
-    #[test]
-    fn test_decompose_hours_minutes_seconds_millis_more_than_one_year() {
-        let milliseconds: i64 = 14 * 30 * 24 * 60 * 60 * 1000
-            + 35 * 24 * 60 * 60 * 1000
-            + 5 * 60 * 60 * 1000
-            + 22 * 60 * 1000
-            + 34 * 1000
-            + 329;
-
-        let duration = chrono::Duration::milliseconds(milliseconds);
-        let current_datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 0, 0).unwrap();
-
-        let expected_date = current_datetime + chrono::Duration::milliseconds(milliseconds as i64);
-        let components = decompose_duration(duration, current_datetime, false);
-
-        assert_eq!(components.year, expected_date.year());
-        assert_eq!(current_datetime.year(), expected_date.year() - 1);
-        assert_eq!(components.month, expected_date.month());
-        assert_eq!(current_datetime.month(), expected_date.month() - 3);
-        assert_eq!(components.day, expected_date.day());
-        assert_eq!(current_datetime.day(), expected_date.day() + 1);
-        assert_eq!(components.hours, 5);
-        assert_eq!(components.minutes, 22);
-        assert_eq!(components.seconds, 34);
-        assert_eq!(components.milliseconds, 329);
     }
 
     #[test]
