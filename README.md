@@ -2,6 +2,8 @@
 
 ![Preview Image](images/preview.png)
 
+Press `R` to see hands animation
+
 ## Install Rust
 
 Use [rustup](https://rustup.rs/)
