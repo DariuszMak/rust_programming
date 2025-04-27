@@ -128,6 +128,19 @@ mod tests {
     }
 
     #[test]
+    fn test_circled_clock_angles_after_month() {
+        let datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 0, 0).unwrap();
+        let duration =
+            TimeDelta::milliseconds(37 * 24 * 60 * 60 * 1000 + 65 * 60 * 1000 + 61 * 1000 + 2);
+
+        let angles = calculate_clock_angles(&datetime, &duration);
+
+        assert_eq!(angles.seconds, 3200761.0);
+        assert_eq!(angles.minutes, 53346.016);
+        assert_eq!(angles.hours, 889.1003);
+    }
+
+    #[test]
     fn test_pid_update() {
         let mut pid = PID {
             kp: 1.0,
