@@ -143,6 +143,7 @@ mod tests {
         assert_eq!(components.year, expected_date.year());
         assert_eq!(components.month, expected_date.month());
         assert_eq!(components.day, expected_date.day());
+        assert_eq!(current_datetime.day(), expected_date.day());
         assert_eq!(components.hours, 0);
         assert_eq!(components.minutes, 0);
         assert_eq!(components.seconds, 9296);
@@ -167,6 +168,7 @@ mod tests {
         assert_eq!(components.year, expected_date.year());
         assert_eq!(components.month, expected_date.month());
         assert_eq!(components.day, expected_date.day());
+        assert_eq!(current_datetime.day(), expected_date.day());
         assert_eq!(components.hours, 2);
         assert_eq!(components.minutes, 34);
         assert_eq!(components.seconds, 56);
@@ -191,6 +193,7 @@ mod tests {
         assert_eq!(components.year, expected_date.year());
         assert_eq!(components.month, expected_date.month());
         assert_eq!(components.day, expected_date.day());
+        assert_eq!(current_datetime.day(), expected_date.day() - 1);
         assert_eq!(components.hours, 0);
         assert_eq!(components.minutes, 0);
         assert_eq!(components.seconds, 94954);
@@ -215,6 +218,7 @@ mod tests {
         assert_eq!(components.year, expected_date.year());
         assert_eq!(components.month, expected_date.month());
         assert_eq!(components.day, expected_date.day());
+        assert_eq!(current_datetime.day(), expected_date.day() - 1);
         assert_eq!(components.hours, 2);
         assert_eq!(components.minutes, 22);
         assert_eq!(components.seconds, 34);
