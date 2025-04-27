@@ -100,17 +100,35 @@ impl Add for HandAngles {
 }
 
 pub fn calculate_clock_angles(datetime: &DateTime<Local>, duration: &TimeDelta) -> HandAngles {
-    let new_datetime = *datetime + *duration;
+    let elapsed_ms = duration.num_milliseconds();
 
-    let seconds =
-        new_datetime.second() as f32 + (new_datetime.timestamp_subsec_millis() as f32) / 1e3;
-    let minutes = new_datetime.minute() as f32 + seconds / 60.0;
-    let hours = new_datetime.hour() as f32 + minutes / 60.0;
+    let base_millis = datetime.timestamp_subsec_millis() as i64;
+    let base_seconds = datetime.second() as i64;
+    let base_minutes = datetime.minute() as i64;
+    let base_hours = datetime.hour() as i64;
+
+    let total_millis = base_millis + (elapsed_ms % 1000);
+    let carry_seconds = total_millis / 1000;
+    let millis = (total_millis % 1000) as f32;
+
+    let total_seconds = base_seconds + (elapsed_ms / 1000) % 60 + carry_seconds;
+    let carry_minutes = total_seconds / 60;
+    let seconds = (total_seconds % 60) as f32;
+
+    let total_minutes = base_minutes + (elapsed_ms / (1000 * 60)) % 60 + carry_minutes;
+    let carry_hours = total_minutes / 60;
+    let minutes = (total_minutes % 60) as f32;
+
+    let hours = (base_hours + (elapsed_ms / (1000 * 60 * 60)) + carry_hours) as f32;
+
+    let second_angle = seconds + millis / 1e3;
+    let minute_angle = minutes + second_angle / 60.0;
+    let hour_angle = hours + minute_angle / 60.0;
 
     HandAngles {
-        seconds,
-        minutes,
-        hours,
+        seconds: second_angle,
+        minutes: minute_angle,
+        hours: hour_angle,
     }
 }
 
