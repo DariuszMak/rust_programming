@@ -30,13 +30,13 @@ pub fn calculate_clock_angles(datetime: &DateTime<Local>, duration: &TimeDelta) 
         .signed_duration_since(midnight_local)
         .num_milliseconds();
     let elapsed_ms = duration.num_milliseconds();
-    let total_ms = start_ms + elapsed_ms;
 
-    let total_seconds = total_ms as f64 / 1000.0;
+    let start_s = start_ms as f64 / 1000.0;
+    let elapsed_s = elapsed_ms as f64 / 1000.0;
 
-    let seconds_angle = total_seconds;
-    let minutes_angle = total_seconds / 60.0;
-    let hours_angle = total_seconds / 3600.0;
+    let seconds_angle = start_s % 60.0 + elapsed_s;
+    let minutes_angle = (start_s / 60.0) % 60.0 + elapsed_s / 60.0;
+    let hours_angle = (start_s / 3600.0) % 12.0 + elapsed_s / 3600.0;
 
     HandAngles {
         seconds: seconds_angle as f32,
