@@ -22,7 +22,6 @@ impl Add for HandAngles {
 }
 
 pub fn calculate_clock_angles(datetime: &DateTime<Local>, duration: &TimeDelta) -> HandAngles {
-    // Start from today's midnight (but in Local timezone)
     let midnight = datetime.date_naive().and_hms_opt(0, 0, 0).unwrap();
     let midnight_local = Local.from_local_datetime(&midnight).unwrap();
 
