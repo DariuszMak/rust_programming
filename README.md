@@ -1,4 +1,6 @@
-# rust_programming
+# rust_programming - Rust (Analog) Clock GUI 
+
+![Preview Image](images/preview.png)
 
 ## Install Rust
 
