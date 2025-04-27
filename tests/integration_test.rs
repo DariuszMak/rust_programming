@@ -3,6 +3,7 @@ mod tests {
     use chrono::DateTime;
     use chrono::Datelike;
     use chrono::Local;
+    use chrono::TimeZone;
     use chrono::Timelike;
 
     use eframe::egui::pos2;
@@ -58,12 +59,7 @@ mod tests {
         let milliseconds = 1001;
 
         let duration = chrono::Duration::milliseconds(milliseconds as i64);
-        let current_datetime = Local::now()
-            .date_naive()
-            .and_hms_opt(0, 0, 0)
-            .unwrap()
-            .and_local_timezone(Local)
-            .unwrap();
+        let current_datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 0, 0).unwrap();
 
         let expected_date = current_datetime + chrono::Duration::milliseconds(milliseconds as i64);
         let components = decompose_duration(duration, current_datetime, false);
@@ -82,12 +78,7 @@ mod tests {
         let seconds = 61;
 
         let duration = chrono::Duration::seconds(seconds as i64);
-        let current_datetime = Local::now()
-            .date_naive()
-            .and_hms_opt(0, 0, 0)
-            .unwrap()
-            .and_local_timezone(Local)
-            .unwrap();
+        let current_datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 0, 0).unwrap();
 
         let expected_date = current_datetime + chrono::Duration::seconds(seconds as i64);
         let components = decompose_duration(duration, current_datetime, false);
@@ -106,12 +97,7 @@ mod tests {
         let seconds = 3600;
 
         let duration = chrono::Duration::seconds(seconds as i64);
-        let current_datetime = Local::now()
-            .date_naive()
-            .and_hms_opt(0, 0, 0)
-            .unwrap()
-            .and_local_timezone(Local)
-            .unwrap();
+        let current_datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 0, 0).unwrap();
 
         let expected_date = current_datetime + chrono::Duration::seconds(seconds as i64);
         let components = decompose_duration(duration, current_datetime, false);
@@ -130,12 +116,7 @@ mod tests {
         let milliseconds = 2 * 60 * 60 * 1000 + 34 * 60 * 1000 + 56 * 1000 + 789;
 
         let duration = chrono::Duration::milliseconds(milliseconds as i64);
-        let current_datetime: DateTime<Local> = Local::now()
-            .date_naive()
-            .and_hms_opt(0, 0, 0)
-            .unwrap()
-            .and_local_timezone(Local)
-            .unwrap();
+        let current_datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 0, 0).unwrap();
 
         let expected_date = current_datetime + chrono::Duration::milliseconds(milliseconds as i64);
         let components = decompose_duration(duration, current_datetime, true);
@@ -155,12 +136,7 @@ mod tests {
         let milliseconds = 2 * 60 * 60 * 1000 + 34 * 60 * 1000 + 56 * 1000 + 789;
 
         let duration = chrono::Duration::milliseconds(milliseconds as i64);
-        let current_datetime = Local::now()
-            .date_naive()
-            .and_hms_opt(0, 0, 0)
-            .unwrap()
-            .and_local_timezone(Local)
-            .unwrap();
+        let current_datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 0, 0).unwrap();
 
         let expected_date = current_datetime + chrono::Duration::milliseconds(milliseconds as i64);
         let components = decompose_duration(duration, current_datetime, false);
@@ -180,12 +156,7 @@ mod tests {
         let milliseconds = 26 * 60 * 60 * 1000 + 22 * 60 * 1000 + 34 * 1000 + 329;
 
         let duration = chrono::Duration::milliseconds(milliseconds as i64);
-        let current_datetime = Local::now()
-            .date_naive()
-            .and_hms_opt(0, 0, 0)
-            .unwrap()
-            .and_local_timezone(Local)
-            .unwrap();
+        let current_datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 0, 0).unwrap();
 
         let expected_date = current_datetime + chrono::Duration::milliseconds(milliseconds as i64);
         let components = decompose_duration(duration, current_datetime, true);
@@ -205,12 +176,7 @@ mod tests {
         let milliseconds = 26 * 60 * 60 * 1000 + 22 * 60 * 1000 + 34 * 1000 + 329;
 
         let duration = chrono::Duration::milliseconds(milliseconds as i64);
-        let current_datetime = Local::now()
-            .date_naive()
-            .and_hms_opt(0, 0, 0)
-            .unwrap()
-            .and_local_timezone(Local)
-            .unwrap();
+        let current_datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 0, 0).unwrap();
 
         let expected_date = current_datetime + chrono::Duration::milliseconds(milliseconds as i64);
         let components = decompose_duration(duration, current_datetime, false);
@@ -230,12 +196,7 @@ mod tests {
         let milliseconds: i64 = 35 * 24 * 60 * 60 * 1000 + 22 * 60 * 1000 + 34 * 1000 + 329;
 
         let duration = chrono::Duration::milliseconds(milliseconds);
-        let current_datetime = Local::now()
-            .date_naive()
-            .and_hms_opt(0, 0, 0)
-            .unwrap()
-            .and_local_timezone(Local)
-            .unwrap();
+        let current_datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 0, 0).unwrap();
 
         let expected_date = current_datetime + chrono::Duration::milliseconds(milliseconds as i64);
         let components = decompose_duration(duration, current_datetime, true);
@@ -256,12 +217,7 @@ mod tests {
         let milliseconds: i64 = 35 * 24 * 60 * 60 * 1000 + 22 * 60 * 1000 + 34 * 1000 + 329;
 
         let duration = chrono::Duration::milliseconds(milliseconds);
-        let current_datetime = Local::now()
-            .date_naive()
-            .and_hms_opt(0, 0, 0)
-            .unwrap()
-            .and_local_timezone(Local)
-            .unwrap();
+        let current_datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 0, 0).unwrap();
 
         let expected_date = current_datetime + chrono::Duration::milliseconds(milliseconds as i64);
         let components = decompose_duration(duration, current_datetime, false);
