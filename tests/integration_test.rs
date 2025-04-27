@@ -54,6 +54,18 @@ mod tests {
     }
 
     #[test]
+    fn test_noon_clock_angles_from_milliseconds() {
+        let datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 0, 0).unwrap();
+        let duration = TimeDelta::milliseconds(12 * 60 * 60 * 1000);
+
+        let angles = calculate_clock_angles(&datetime, &duration);
+
+        assert_eq!(angles.seconds, 43200.0);
+        assert_eq!(angles.minutes, 720.0);
+        assert_eq!(angles.hours, 12.0);
+    }
+
+    #[test]
     fn test_maximum_clock_angles() {
         let datetime = Local.with_ymd_and_hms(2025, 4, 27, 23, 59, 59).unwrap();
         let duration = TimeDelta::zero();
@@ -66,7 +78,7 @@ mod tests {
     }
 
     #[test]
-    fn test_maximum_clock_angles_with_milliseconds() {
+    fn test_maximum_clock_angles_from_milliseconds() {
         let datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 0, 0).unwrap();
         let duration =
             TimeDelta::milliseconds(23 * 60 * 60 * 1000 + 59 * 60 * 1000 + 59 * 1000 + 999);
@@ -87,6 +99,18 @@ mod tests {
 
         assert_eq!(angles.seconds, 0.0);
         assert_eq!(angles.minutes, 30.0);
+        assert_eq!(angles.hours, 3.5);
+    }
+
+    #[test]
+    fn test_half_past_three_clock_angles_from_milliseconds() {
+        let datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 00, 0).unwrap();
+        let duration = TimeDelta::milliseconds(3 * 60 * 60 * 1000 + 30 * 60 * 1000);
+
+        let angles = calculate_clock_angles(&datetime, &duration);
+
+        assert_eq!(angles.seconds, 12600.0);
+        assert_eq!(angles.minutes, 210.0);
         assert_eq!(angles.hours, 3.5);
     }
 
