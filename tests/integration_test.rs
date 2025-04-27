@@ -2,6 +2,7 @@
 mod tests {
     use chrono::Datelike;
     use chrono::Local;
+    use chrono::TimeDelta;
     use chrono::TimeZone;
     use chrono::Timelike;
 
@@ -109,8 +110,11 @@ mod tests {
 
     #[test]
     fn test_midnight_clock_angles() {
-        let time: Time = Time::new(1970, 1, 1, 0, 0, 0, 0);
-        let angles = calculate_clock_angles(&time);
+        let datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 0, 0).unwrap();
+        let duration = TimeDelta::zero();
+
+        let angles = calculate_clock_angles(&datetime, duration);
+
         assert_eq!(angles.seconds, 0.0);
         assert_eq!(angles.minutes, 0.0);
         assert_eq!(angles.hours, 0.0);
@@ -118,8 +122,11 @@ mod tests {
 
     #[test]
     fn test_noon_clock_angles() {
-        let time: Time = Time::new(1970, 1, 1, 12, 0, 0, 0);
-        let angles = calculate_clock_angles(&time);
+        let datetime = Local.with_ymd_and_hms(2025, 4, 27, 12, 0, 0).unwrap();
+        let duration = TimeDelta::zero();
+
+        let angles = calculate_clock_angles(&datetime, duration);
+
         assert_eq!(angles.seconds, 0.0);
         assert_eq!(angles.minutes, 0.0);
         assert_eq!(angles.hours, 12.0);
@@ -127,17 +134,36 @@ mod tests {
 
     #[test]
     fn test_maximum_clock_angles() {
-        let time: Time = Time::new(1970, 1, 1, 23, 59, 59, 0);
-        let angles = calculate_clock_angles(&time);
+        let datetime = Local.with_ymd_and_hms(2025, 4, 27, 23, 59, 59).unwrap();
+        let duration = TimeDelta::zero();
+
+        let angles = calculate_clock_angles(&datetime, duration);
+
         assert_eq!(angles.seconds, 59.0);
         assert_eq!(angles.minutes, 59.983334);
         assert_eq!(angles.hours, 23.999722);
     }
 
     #[test]
+    fn test_maximum_clock_angles_with_milliseconds() {
+        let datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 0, 0).unwrap();
+        let duration =
+            TimeDelta::milliseconds(23 * 60 * 60 * 1000 + 59 * 60 * 1000 + 59 * 1000 + 999);
+
+        let angles = calculate_clock_angles(&datetime, duration);
+
+        assert_eq!(angles.seconds, 59.999);
+        assert_eq!(angles.minutes, 59.999985);
+        assert_eq!(angles.hours, 24.0);
+    }
+
+    #[test]
     fn test_half_past_three_clock_angles() {
-        let time: Time = Time::new(1970, 1, 1, 3, 30, 0, 0);
-        let angles = calculate_clock_angles(&time);
+        let datetime = Local.with_ymd_and_hms(2025, 4, 27, 3, 30, 0).unwrap();
+        let duration = TimeDelta::zero();
+
+        let angles = calculate_clock_angles(&datetime, duration);
+
         assert_eq!(angles.seconds, 0.0);
         assert_eq!(angles.minutes, 30.0);
         assert_eq!(angles.hours, 3.5);
@@ -145,8 +171,12 @@ mod tests {
 
     #[test]
     fn test_circled_clock_angles() {
-        let time: Time = Time::new(1970, 1, 1, 33, 65, 61, 2);
-        let angles = calculate_clock_angles(&time);
+        let datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 0, 0).unwrap();
+        let duration =
+            TimeDelta::milliseconds(65 * 60 * 60 * 1000 + 61 * 60 * 1000 + 2 * 1000 + 999);
+
+        let angles = calculate_clock_angles(&datetime, duration);
+
         assert_eq!(angles.seconds, 61.002);
         assert_eq!(angles.minutes, 66.0167);
         assert_eq!(angles.hours, 34.100277);

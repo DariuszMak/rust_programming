@@ -5,12 +5,10 @@ use eframe::{egui, egui::Vec2, App};
 use egui::Key;
 use std::f32::consts::PI;
 
+use super::calculate_clock_angles;
 use super::polar_to_cartesian;
-use super::utils::calculate_clock_angles;
-use super::utils::convert_system_time_to_time;
-use super::utils::decompose_duration;
 use super::utils::ClockPID;
-use super::utils::Time;
+
 use super::utils::PID;
 use super::HandAngles;
 
@@ -93,16 +91,13 @@ impl App for ClockApp {
         }
 
         self.tick();
+        let zero_duration = chrono::Duration::zero();
+        let duration: chrono::TimeDelta = self.current_time.signed_duration_since(self.start_time);
 
-        let start_time_converted = convert_system_time_to_time(self.start_time);
-
-        let duration = self.current_time.signed_duration_since(self.start_time);
-        let current_datetime = Local::now();
-
-        let duration_time: Time = decompose_duration(duration, current_datetime, true);
-
-        let start_time_clock_angles: HandAngles = calculate_clock_angles(&start_time_converted);
-        let duration_time_clock_angles: HandAngles = calculate_clock_angles(&duration_time);
+        let start_time_clock_angles: HandAngles =
+            calculate_clock_angles(&self.start_time, &zero_duration);
+        let duration_time_clock_angles: HandAngles =
+            calculate_clock_angles(&self.current_time, &duration);
 
         let calculated_angles = start_time_clock_angles + duration_time_clock_angles;
 
