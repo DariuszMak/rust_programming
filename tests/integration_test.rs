@@ -113,7 +113,7 @@ mod tests {
         let datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 0, 0).unwrap();
         let duration = TimeDelta::zero();
 
-        let angles = calculate_clock_angles(&datetime, duration);
+        let angles = calculate_clock_angles(&datetime, &duration);
 
         assert_eq!(angles.seconds, 0.0);
         assert_eq!(angles.minutes, 0.0);
@@ -125,7 +125,7 @@ mod tests {
         let datetime = Local.with_ymd_and_hms(2025, 4, 27, 12, 0, 0).unwrap();
         let duration = TimeDelta::zero();
 
-        let angles = calculate_clock_angles(&datetime, duration);
+        let angles = calculate_clock_angles(&datetime, &duration);
 
         assert_eq!(angles.seconds, 0.0);
         assert_eq!(angles.minutes, 0.0);
@@ -137,7 +137,7 @@ mod tests {
         let datetime = Local.with_ymd_and_hms(2025, 4, 27, 23, 59, 59).unwrap();
         let duration = TimeDelta::zero();
 
-        let angles = calculate_clock_angles(&datetime, duration);
+        let angles = calculate_clock_angles(&datetime, &duration);
 
         assert_eq!(angles.seconds, 59.0);
         assert_eq!(angles.minutes, 59.983334);
@@ -150,7 +150,7 @@ mod tests {
         let duration =
             TimeDelta::milliseconds(23 * 60 * 60 * 1000 + 59 * 60 * 1000 + 59 * 1000 + 999);
 
-        let angles = calculate_clock_angles(&datetime, duration);
+        let angles = calculate_clock_angles(&datetime, &duration);
 
         assert_eq!(angles.seconds, 59.999);
         assert_eq!(angles.minutes, 59.999985);
@@ -162,7 +162,7 @@ mod tests {
         let datetime = Local.with_ymd_and_hms(2025, 4, 27, 3, 30, 0).unwrap();
         let duration = TimeDelta::zero();
 
-        let angles = calculate_clock_angles(&datetime, duration);
+        let angles = calculate_clock_angles(&datetime, &duration);
 
         assert_eq!(angles.seconds, 0.0);
         assert_eq!(angles.minutes, 30.0);
@@ -173,9 +173,9 @@ mod tests {
     fn test_circled_clock_angles() {
         let datetime = Local.with_ymd_and_hms(2025, 4, 27, 0, 0, 0).unwrap();
         let duration =
-            TimeDelta::milliseconds(65 * 60 * 60 * 1000 + 61 * 60 * 1000 + 2 * 1000 + 999);
+            TimeDelta::milliseconds(33 * 60 * 60 * 1000 + 65 * 60 * 1000 + 61 * 1000 + 2);
 
-        let angles = calculate_clock_angles(&datetime, duration);
+        let angles = calculate_clock_angles(&datetime, &duration);
 
         assert_eq!(angles.seconds, 61.002);
         assert_eq!(angles.minutes, 66.0167);

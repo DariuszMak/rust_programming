@@ -10,7 +10,6 @@ use super::polar_to_cartesian;
 use super::utils::ClockPID;
 
 use super::utils::PID;
-use super::HandAngles;
 
 pub struct ClockApp {
     start_time: DateTime<Local>,
@@ -92,12 +91,10 @@ impl App for ClockApp {
 
         self.tick();
         let zero_duration = chrono::Duration::zero();
-        let duration: chrono::TimeDelta = self.current_time.signed_duration_since(self.start_time);
+        let duration = self.current_time.signed_duration_since(self.start_time);
 
-        let start_time_clock_angles: HandAngles =
-            calculate_clock_angles(&self.start_time, &zero_duration);
-        let duration_time_clock_angles: HandAngles =
-            calculate_clock_angles(&self.current_time, &duration);
+        let start_time_clock_angles = calculate_clock_angles(&self.start_time, &zero_duration);
+        let duration_time_clock_angles = calculate_clock_angles(&self.start_time, &duration);
 
         let calculated_angles = start_time_clock_angles + duration_time_clock_angles;
 
