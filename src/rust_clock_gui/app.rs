@@ -90,13 +90,10 @@ impl App for ClockApp {
         }
 
         self.tick();
-        let zero_duration = chrono::Duration::zero();
+
         let duration = self.current_time.signed_duration_since(self.start_time);
 
-        let start_time_clock_angles = calculate_clock_angles(&self.start_time, &zero_duration);
-        let duration_time_clock_angles = calculate_clock_angles(&self.start_time, &duration);
-
-        let calculated_angles = start_time_clock_angles + duration_time_clock_angles;
+        let calculated_angles = calculate_clock_angles(&self.start_time, &duration);
 
         let pid_second_error = calculated_angles.seconds - self.pid_second;
         let pid_minute_error = calculated_angles.minutes - self.pid_minute;
