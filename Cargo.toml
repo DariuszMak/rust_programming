@@ -1,9 +1,9 @@
 [package]
 name = "rust_clock_gui"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
 
-description = "A simple Rust GUI Analog Clock application"
+description = "Rust GUI Analog Clock application"
 authors = ["Dariusz Makarewicz <darekmakarewicz1994@gmail.com>"]
 license = "MIT"
 

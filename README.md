@@ -1,4 +1,4 @@
-# rust_programming - Rust (Analog) Clock GUI 
+# rust_programming - Rust GUI Analog Clock application
 
 ![Preview Image](images/preview.png)
 
