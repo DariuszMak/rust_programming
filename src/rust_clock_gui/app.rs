@@ -1,9 +1,10 @@
-use chrono::DateTime;
-use chrono::Local;
-use chrono::Timelike;
-use eframe::{egui, egui::Vec2, App};
-use egui::Key;
 use std::f32::consts::PI;
+
+use chrono::{DateTime, Local, Timelike};
+use eframe::{
+    egui::{self, Key, Pos2, Vec2},
+    App,
+};
 
 use super::calculate_clock_angles;
 use super::polar_to_cartesian;
@@ -90,9 +91,36 @@ impl App for ClockApp {
         }
 
         self.tick();
+        self.update_pid();
 
+        egui::CentralPanel::default().show(ctx, |ui| {
+            ui.vertical_centered(|ui| {
+                ui.heading("Analog Clock");
+                self.draw_digital_clock(ui);
+                ui.separator();
+
+                let available_size = ui.available_size_before_wrap();
+                let size = available_size.min_elem();
+                let (rect, _response) =
+                    ui.allocate_exact_size(Vec2::splat(size), egui::Sense::hover());
+                let painter = ui.painter();
+                let center = rect.center();
+                let radius = size * 0.4;
+
+                self.draw_clock_face(painter, ctx, center, radius);
+                self.draw_ticks(painter, center, radius);
+                self.draw_hour_numbers(painter, ui, center, radius);
+                self.draw_hands(painter, center, radius);
+            });
+        });
+
+        ctx.request_repaint();
+    }
+}
+
+impl ClockApp {
+    fn update_pid(&mut self) {
         let duration = self.current_time.signed_duration_since(self.start_time);
-
         let calculated_angles = calculate_clock_angles(&self.start_time, &duration);
 
         let pid_second_error = calculated_angles.seconds - self.pid_second;
@@ -102,98 +130,90 @@ impl App for ClockApp {
         self.pid_second += self.second_pid.update(pid_second_error);
         self.pid_minute += self.minute_pid.update(pid_minute_error);
         self.pid_hour += self.hour_pid.update(pid_hour_error);
+    }
 
-        egui::CentralPanel::default().show(ctx, |ui| {
-            ui.vertical_centered(|ui| {
-                ui.heading("Analog Clock");
+    fn draw_digital_clock(&self, ui: &mut egui::Ui) {
+        let datetime: DateTime<Local> = self.current_time;
+        let formatted_time = format!(
+            "{:02}:{:02}:{:02}.{:03}",
+            datetime.hour(),
+            datetime.minute(),
+            datetime.second(),
+            datetime.timestamp_subsec_millis()
+        );
+        ui.label(egui::RichText::new(formatted_time).monospace().size(24.0));
+    }
 
-                let datetime: DateTime<Local> = self.current_time;
-                let formatted_time = format!(
-                    "{:02}:{:02}:{:02}.{:03}",
-                    datetime.hour(),
-                    datetime.minute(),
-                    datetime.second(),
-                    datetime.timestamp_subsec_millis()
-                );
-                ui.label(egui::RichText::new(formatted_time).monospace().size(24.0));
-                ui.separator();
+    fn draw_clock_face(
+        &self,
+        painter: &egui::Painter,
+        ctx: &egui::Context,
+        center: Pos2,
+        radius: f32,
+    ) {
+        let stroke_color = ctx.style().visuals.text_color();
 
-                let available_size = ui.available_size_before_wrap();
-                let size = available_size.min_elem();
-                let (rect, _response): (egui::Rect, egui::Response) =
-                    ui.allocate_exact_size(Vec2::splat(size), egui::Sense::hover());
-                let painter = ui.painter();
+        painter.circle_stroke(center, radius, egui::Stroke::new(2.0, stroke_color));
+    }
 
-                let center = rect.center();
-                let radius = size * 0.4;
+    fn draw_ticks(&self, painter: &egui::Painter, center: Pos2, radius: f32) {
+        for i in 0..60 {
+            let angle = (i as f32 / 60.0) * 2.0 * PI;
+            let outer = polar_to_cartesian(center, radius, angle);
+            let inner = if i % 5 == 0 {
+                polar_to_cartesian(center, radius - 10.0, angle)
+            } else {
+                polar_to_cartesian(center, radius - 5.0, angle)
+            };
+            painter.line_segment(
+                [inner, outer],
+                egui::Stroke::new(3.0, egui::Color32::LIGHT_GRAY),
+            );
+        }
+    }
 
-                painter.circle_stroke(
-                    center,
-                    radius,
-                    egui::Stroke::new(2.0, ui.visuals().text_color()),
-                );
+    fn draw_hour_numbers(&self, painter: &egui::Painter, ui: &egui::Ui, center: Pos2, radius: f32) {
+        for i in 0..12 {
+            let angle = (i as f32 / 12.0) * 2.0 * PI;
+            let outer = polar_to_cartesian(center, radius, angle);
+            let inner = polar_to_cartesian(center, radius - 10.0, angle);
+            painter.line_segment([inner, outer], egui::Stroke::new(1.5, egui::Color32::GRAY));
 
-                let clock = ClockPID {
-                    pid_second: self.pid_second,
-                    pid_minute: self.pid_minute,
-                    pid_hour: self.pid_hour,
-                };
+            let text_position = polar_to_cartesian(center, radius - 25.0, angle);
+            painter.text(
+                text_position,
+                egui::Align2::CENTER_CENTER,
+                format!("{}", ((i + 11) % 12) + 1),
+                egui::TextStyle::Heading.resolve(ui.style()),
+                egui::Color32::WHITE,
+            );
+        }
+    }
 
-                let (pid_second_angle, pid_minute_angle, pid_hour_angle) =
-                    clock.angles_in_radians();
+    fn draw_hands(&self, painter: &egui::Painter, center: Pos2, radius: f32) {
+        let clock = ClockPID {
+            pid_second: self.pid_second,
+            pid_minute: self.pid_minute,
+            pid_hour: self.pid_hour,
+        };
 
-                let second_hand = polar_to_cartesian(center, radius * 0.9, pid_second_angle);
-                let minute_hand = polar_to_cartesian(center, radius * 0.7, pid_minute_angle);
-                let hour_hand = polar_to_cartesian(center, radius * 0.5, pid_hour_angle);
+        let (second_angle, minute_angle, hour_angle) = clock.angles_in_radians();
 
-                painter.line_segment(
-                    [center, hour_hand],
-                    egui::Stroke::new(8.0, egui::Color32::WHITE),
-                );
-                painter.line_segment(
-                    [center, minute_hand],
-                    egui::Stroke::new(6.0, egui::Color32::LIGHT_GRAY),
-                );
-                painter.line_segment(
-                    [center, second_hand],
-                    egui::Stroke::new(2.0, egui::Color32::RED),
-                );
+        let second_hand = polar_to_cartesian(center, radius * 0.9, second_angle);
+        let minute_hand = polar_to_cartesian(center, radius * 0.7, minute_angle);
+        let hour_hand = polar_to_cartesian(center, radius * 0.5, hour_angle);
 
-                for i in 0..60 {
-                    let angle = (i as f32 / 60.0) * 2.0 * PI;
-                    let outer = polar_to_cartesian(center, radius, angle);
-                    let inner = if i % 5 == 0 {
-                        polar_to_cartesian(center, radius - 10.0, angle)
-                    } else {
-                        polar_to_cartesian(center, radius - 5.0, angle)
-                    };
-                    painter.line_segment(
-                        [inner, outer],
-                        egui::Stroke::new(3.0, egui::Color32::LIGHT_GRAY),
-                    );
-                }
-
-                for i in 0..12 {
-                    let angle = (i as f32 / 12.0) * 2.0 * PI;
-                    let outer = polar_to_cartesian(center, radius, angle);
-                    let inner = polar_to_cartesian(center, radius - 10.0, angle);
-                    painter
-                        .line_segment([inner, outer], egui::Stroke::new(1.5, egui::Color32::GRAY));
-
-                    let text_angle = (i as f32 / 12.0) * 2.0 * PI;
-                    let text_position = polar_to_cartesian(center, radius - 25.0, text_angle);
-
-                    painter.text(
-                        text_position,
-                        egui::Align2::CENTER_CENTER,
-                        format!("{}", ((i + 12 - 1) % 12) + 1),
-                        egui::TextStyle::Heading.resolve(ui.style()),
-                        egui::Color32::WHITE,
-                    );
-                }
-            });
-        });
-
-        ctx.request_repaint();
+        painter.line_segment(
+            [center, hour_hand],
+            egui::Stroke::new(8.0, egui::Color32::WHITE),
+        );
+        painter.line_segment(
+            [center, minute_hand],
+            egui::Stroke::new(6.0, egui::Color32::LIGHT_GRAY),
+        );
+        painter.line_segment(
+            [center, second_hand],
+            egui::Stroke::new(2.0, egui::Color32::RED),
+        );
     }
 }
