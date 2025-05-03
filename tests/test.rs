@@ -158,6 +158,26 @@ mod tests {
     }
 
     #[test]
+    fn test_pid_reset() {
+        let mut pid = PID {
+            kp: 1.0,
+            ki: 0.1,
+            kd: 0.5,
+            ..Default::default()
+        };
+
+        pid.update(1.0);
+        pid.update(0.5);
+
+        assert_ne!(pid.integral, 0.0);
+        assert_ne!(pid.prev_error, 0.0);
+
+        pid.reset();
+        assert_eq!(pid.integral, 0.0);
+        assert_eq!(pid.prev_error, 0.0);
+    }
+
+    #[test]
     fn test_clock_pid_angles_in_radians() {
         let clock_pid = ClockPID {
             pid_second: 15.0,
