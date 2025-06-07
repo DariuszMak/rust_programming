@@ -9,5 +9,5 @@ license = "MIT"
 
 [dependencies]
 eframe = "0.31.1"
+image = "0.25"
 chrono = { version = "0.4.38", features = ["clock"] }
-
