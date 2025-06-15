@@ -1,6 +1,6 @@
 # rust_programming - Rust GUI Analog Clock application
 
-![Preview Image](images/preview.png)
+[![Preview Image](images/preview.png)](https://github.com/DariuszMak/rust_programming/releases/download/1.0.2/rust_clock_gui.exe)
 
 Press `R` to see hands animation
 
