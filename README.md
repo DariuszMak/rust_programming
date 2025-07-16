@@ -23,7 +23,7 @@ clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- ; cargo run ;
 ##### Full project re-build
 
 ```sh
-cargo clean ; git clean -fxd ; clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- ; cargo build --release ; 
+cargo clean ; git clean -fxd ; clear ; cargo fmt --all --verbose ; cargo test ; cargo clippy -- ; cargo build --release ; .\target\release\rust_clock_gui.exe ; 
 ```
 
 ##### Very strict linting
