@@ -1,3 +1,22 @@
+## Table of Contents
+
+- [rust_programming - Rust GUI Analog Clock application](#rust_programming---rust-gui-analog-clock-application)
+  - [Install Rust](#install-rust)
+  - [Rust eframe](#rust-eframe)
+  - [Useful bunch of commands](#useful-bunch-of-commands)
+    - [Regular bunch for development](#regular-bunch-for-development)
+    - [Full project re-build](#full-project-re-build)
+    - [Very strict linting](#very-strict-linting)
+    - [Create a dump to file (Linux-based environment only)](#create-a-dump-to-file-linux-based-environment-only)
+    - [Update Rust](#update-rust)
+  - [RUN](#run)
+  - [Run test](#run-test)
+  - [Create a release](#create-a-release)
+  - [Formatting](#formatting)
+  - [Linting](#linting)
+
+---
+
 # rust_programming - Rust GUI Analog Clock application
 
 [![Preview Image](images/preview.png)](https://github.com/DariuszMak/rust_programming/releases/download/1.0.2/rust_clock_gui.exe)
